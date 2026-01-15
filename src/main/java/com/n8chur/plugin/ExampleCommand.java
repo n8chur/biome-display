@@ -1,4 +1,4 @@
-package org.example.plugin;
+package com.n8chur.plugin;
 
 import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.Message;

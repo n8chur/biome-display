@@ -1,14 +1,13 @@
 {
-    "Group": "Example",
-    "Name": "ExamplePlugin",
-    "Version": "0.0.2",
-    "Description": "An example plugin for HyTale!",
+    "Group": "n8chur",
+    "Name": "BiomeDisplay",
+    "Version": "0.0.1",
+    "Description": "Displays the current biome information in the UI.",
     "Authors": [
         {
-            "Name": "It's you!"
+            "Name": "n8chur"
         }
     ],
-    "Website": "example.org",
     "ServerVersion": "*",
     "Dependencies": {
         
@@ -17,6 +16,6 @@
         
     },
     "DisabledByDefault": false,
-    "Main": "org.example.plugin.ExamplePlugin",
+    "Main": "com.n8chur.plugin.BiomeDisplayPlugin",
     "IncludesAssetPack": true
 }
