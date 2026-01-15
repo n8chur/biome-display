@@ -17,6 +17,7 @@ public class BiomeDisplayPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
-        LOGGER.atInfo().log("Setting up " + this.getName());
+
+        this.getEntityStoreRegistry().registerSystem(new BiomeObserverSystem());
     }
 }
