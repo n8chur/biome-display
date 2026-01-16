@@ -48,8 +48,7 @@ public class BiomeHud extends CustomUIHud {
         // TODO: pass original message through
         ui.set("#TierLabel.TextSpans", Message.raw(biomeInfo.tierName));
         ui.set("#BiomeLabel.TextSpans", Message.raw(biomeInfo.biomeName));
-        ui.set("#RegionLabel.TextSpans", Message.raw(biomeInfo.regionName));
-        ui.set("#ZoneLabel.TextSpans", Message.raw(biomeInfo.zoneName));
+        ui.set("#RegionLabel.TextSpans", Message.raw(biomeInfo.regionName + ", " + biomeInfo.zoneName).bold(true));
     }
 
     public void updateHud(BiomeInfo biomeInfo) {
