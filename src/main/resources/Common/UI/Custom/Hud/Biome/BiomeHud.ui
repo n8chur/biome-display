@@ -1,0 +1,30 @@
+Group #BiomeHud {
+  LayoutMode: Top;
+  Padding: (Vertical: 48);
+
+  Group #Content {
+    Background: (TexturePath: "../../Common/TooltipDefaultBackground.png", Border: 20);
+    Padding: (Horizontal: 24, Vertical: 24);
+    LayoutMode: Center;
+    Anchor: (Height: 96, Width: 200);
+
+    Group #Info {
+        LayoutMode: Top;
+
+        Label #BiomeLabel {
+          Style: LabelStyle(FontSize: 12);
+          Text: "Biome Name";
+        }
+
+        Label #RegionLabel {
+          Style: LabelStyle(FontSize: 12);
+          Text: "Region Name";
+        }
+
+        Label #ZoneLabel {
+          Style: LabelStyle(FontSize: 12);
+          Text: "Zone Name";
+        }
+    }
+  }
+}

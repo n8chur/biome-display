@@ -3,10 +3,13 @@ package com.n8chur.plugin;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.n8chur.plugin.ui.BiomeHudProvider;
 
 import javax.annotation.Nonnull;
 
 public class BiomeDisplayPlugin extends JavaPlugin {
+
+    public static BiomeHudProvider hudProvider = new BiomeHudProvider();
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 

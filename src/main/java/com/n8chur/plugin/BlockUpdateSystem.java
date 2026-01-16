@@ -19,8 +19,10 @@ import com.hypixel.hytale.server.core.universe.world.worldgen.IWorldGen;
 import com.hypixel.hytale.server.worldgen.biome.Biome;
 import com.hypixel.hytale.server.worldgen.chunk.ChunkGenerator;
 import com.hypixel.hytale.server.worldgen.chunk.ZoneBiomeResult;
+import com.hypixel.hytale.server.worldgen.loader.biome.BiomeJsonLoader;
 import com.hypixel.hytale.server.worldgen.zone.Zone;
 import com.hypixel.hytale.server.worldgen.zone.ZoneDiscoveryConfig;
+import com.n8chur.plugin.ui.BiomeHud;
 
 import javax.annotation.Nonnull;
 
@@ -44,42 +46,51 @@ public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
         Player player = holder.getComponent(Player.getComponentType());
         if (player == null) return;
 
+        // TODO: Hide hud when player disconnects
+
         // Get player's reference and return if not found
         PlayerRef playerRef = holder.getComponent(PlayerRef.getComponentType());
         if (playerRef == null) return;
 
-        // Get world and return if not found
+        // Get world and hide hud and return if not found
         World world = player.getWorld();
-        if (world == null) return;
-
-        // Get world generator and log if not an instance of ChunkGenerator
-        if (!(world.getChunkStore().getGenerator() instanceof ChunkGenerator generator)) {
-            LOGGER.atInfo().log("No biome found.");
+        if (world == null) {
+            hideBiomeHud(player, playerRef);
             return;
         }
 
-        // Extract biome information
-        logBiomeInfo(generator, playerRef, world);
+        // Get world generator and hide hud if not an instance of ChunkGenerator
+        if (!(world.getChunkStore().getGenerator() instanceof ChunkGenerator generator)) {
+            hideBiomeHud(player, playerRef);
+            return;
+        }
+
+        // Update biome hud
+        updateBiomeHud(generator, player, playerRef, world);
     }
 
-    private void logBiomeInfo(ChunkGenerator generator, PlayerRef playerRef, World world) {
+    private void hideBiomeHud(@Nonnull Player player, @Nonnull PlayerRef playerRef) {
+        BiomeDisplayPlugin.hudProvider.hideHud(player, playerRef);
+    }
+
+    private void updateBiomeHud(ChunkGenerator generator, Player player, PlayerRef playerRef, World world) {
         Vector3d position = playerRef.getTransform().getPosition();
         int seed = (int) world.getWorldConfig().getSeed();
         int x = (int) position.getX();
         int z = (int) position.getZ();
-
-        // Get the biome result from the generator
         ZoneBiomeResult result = generator.getZoneBiomeResultAt(seed, x, z);
-        Zone zone = result.getZoneResult().getZone();
-        ZoneDiscoveryConfig discoveryConfig = zone.discoveryConfig();
 
         Biome biome = result.getBiome();
-
         String biomeName = biome.getName();
+
+        Zone zone = result.getZoneResult().getZone();
         String regionName = getRegionName(zone);
+
+        ZoneDiscoveryConfig discoveryConfig = zone.discoveryConfig();
         String zoneName = getZoneName(discoveryConfig);
 
-        LOGGER.atInfo().log("Biome: " + biomeName + " - " + regionName + " - " + zoneName);
+        BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName);
+        BiomeDisplayPlugin.hudProvider.updateHud(player, playerRef, biomeInfo);
     }
 
     private String getRegionName(Zone zone) {
