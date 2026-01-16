@@ -50,30 +50,31 @@ public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
 
         IWorldGen worldGen = world.getChunkStore().getGenerator();
 
-        if (worldGen instanceof ChunkGenerator generator) {
-            Vector3d position = playerRef.getTransform().getPosition();
-            int seed = (int)world.getWorldConfig().getSeed();
-            int x = (int)position.getX();
-            int z = (int)position.getZ();
-            ZoneBiomeResult result = generator.getZoneBiomeResultAt(seed, x, z);
-            Zone zone = result.getZoneResult().getZone();
-            ZoneDiscoveryConfig discoveryConfig = zone.discoveryConfig();
-
-            Biome biome = result.getBiome();
-            String biomeName = biome.getName();
-
-            String regionNameKey = String.format("server.map.region.%s", zone.name());
-            Message regionMessage = Message.translation(regionNameKey);
-            String regionName = regionMessage.getAnsiMessage();
-
-            String zoneNameKey = String.format("server.map.zone.%s", discoveryConfig.zone());
-            Message zoneMessage = Message.translation(zoneNameKey);
-            String zoneName = zoneMessage.getAnsiMessage();
-
-            LOGGER.atInfo().log("Biome: " + biomeName + " - " + regionName + " - " + zoneName);
-        } else {
+        if (!(worldGen instanceof ChunkGenerator generator)) {
             LOGGER.atInfo().log("No biome found.");
+            return;
         }
+
+        Vector3d position = playerRef.getTransform().getPosition();
+        int seed = (int)world.getWorldConfig().getSeed();
+        int x = (int)position.getX();
+        int z = (int)position.getZ();
+        ZoneBiomeResult result = generator.getZoneBiomeResultAt(seed, x, z);
+        Zone zone = result.getZoneResult().getZone();
+        ZoneDiscoveryConfig discoveryConfig = zone.discoveryConfig();
+
+        Biome biome = result.getBiome();
+        String biomeName = biome.getName();
+
+        String regionNameKey = String.format("server.map.region.%s", zone.name());
+        Message regionMessage = Message.translation(regionNameKey);
+        String regionName = regionMessage.getAnsiMessage();
+
+        String zoneNameKey = String.format("server.map.zone.%s", discoveryConfig.zone());
+        Message zoneMessage = Message.translation(zoneNameKey);
+        String zoneName = zoneMessage.getAnsiMessage();
+
+        LOGGER.atInfo().log("Biome: " + biomeName + " - " + regionName + " - " + zoneName);
     }
 
     @Nonnull
