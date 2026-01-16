@@ -10,7 +10,7 @@
     ],
     "ServerVersion": "*",
     "Dependencies": {
-        
+        "Hytale:EntityModule": "*"
     },
     "OptionalDependencies": {
         
