@@ -20,7 +20,7 @@ import com.hypixel.hytale.server.worldgen.chunk.ChunkGenerator;
 import com.hypixel.hytale.server.worldgen.chunk.ZoneBiomeResult;
 import com.hypixel.hytale.server.worldgen.zone.Zone;
 import com.hypixel.hytale.server.worldgen.zone.ZoneDiscoveryConfig;
-import com.n8chur.plugin.settings.BiomeDisplayUserSettingsStore;
+import com.n8chur.plugin.settings.BiomeDisplayUserSettings;
 import com.n8chur.plugin.ui.BiomeHud;
 import com.n8chur.plugin.ui.BiomeHudProvider;
 
@@ -31,7 +31,7 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     @Nonnull
-    private final BiomeDisplayUserSettingsStore userSettingsStore;
+    private final BiomeDisplayUserSettings userSettings;
 
     @Nonnull
     private final BiomeHudProvider hudProvider;
@@ -40,10 +40,10 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
     private final Query<EntityStore> query;
 
     public BiomeDisplayHudUpdateSystem(
-            @Nonnull BiomeDisplayUserSettingsStore userSettingsStore,
+            @Nonnull BiomeDisplayUserSettings userSettings,
             @Nonnull BiomeHudProvider hudProvider
     ) {
-        this.userSettingsStore = userSettingsStore;
+        this.userSettings = userSettings;
         this.hudProvider = hudProvider;
         this.query = Query.and(Player.getComponentType());
     }
@@ -63,7 +63,7 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         PlayerRef playerRef = holder.getComponent(PlayerRef.getComponentType());
         if (playerRef == null) return;
 
-        if (!this.userSettingsStore.getIsEnabled(playerRef)) {
+        if (!this.userSettings.getIsEnabled(playerRef)) {
             hideBiomeHud(player, playerRef);
             return;
         }

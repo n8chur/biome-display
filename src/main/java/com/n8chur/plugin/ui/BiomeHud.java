@@ -44,10 +44,10 @@ public class BiomeHud extends CustomUIHud {
         ui.append("Hud/Biome/BiomeHud.ui");
 
         if (biomeInfo == null) {
-            ui.set("#Tier.TextSpans", Message.raw("Unknown"));
-            ui.set("#BiomeLabel.TextSpans", Message.raw("Unknown"));
-            ui.set("#RegionLabel.TextSpans", Message.raw("Unknown"));
-            ui.set("#ZoneLabel.TextSpans", Message.raw("Unknown"));
+            ui.set("#Tier.TextSpans", Message.raw("???"));
+            ui.set("#BiomeLabel.TextSpans", Message.raw("???"));
+            ui.set("#RegionLabel.TextSpans", Message.raw("???"));
+            ui.set("#ZoneLabel.TextSpans", Message.raw("???"));
             return;
         }
 
@@ -60,6 +60,5 @@ public class BiomeHud extends CustomUIHud {
 
     public void updateHud(BiomeInfo biomeInfo) {
         this.biomeInfo = biomeInfo;
-        // TODO
     }
 }

@@ -20,7 +20,7 @@ public class BiomeHudProvider {
         } else {
             BiomeHud biomeHud = huds.get(playerRef);
             biomeHud.updateHud(biomeInfo);
-            biomeHud.show();
+            player.getHudManager().setCustomHud(playerRef, biomeHud);
         }
     }
 
@@ -29,7 +29,10 @@ public class BiomeHudProvider {
             return;
         }
 
+//        BiomeHud biomeHud = huds.get(playerRef);
         huds.remove(playerRef);
-        player.getHudManager().hideHudComponents(playerRef);
+
+        BlankHud blankHud = new BlankHud(playerRef);
+        player.getHudManager().setCustomHud(playerRef, blankHud);
     }
 }
