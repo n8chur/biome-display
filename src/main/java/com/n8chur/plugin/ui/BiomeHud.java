@@ -41,15 +41,9 @@ public class BiomeHud extends CustomUIHud {
 
     @Override
     protected void build(@Nonnull UICommandBuilder ui) {
-        ui.append("Hud/Biome/BiomeHud.ui");
+        if (biomeInfo == null) return;
 
-        if (biomeInfo == null) {
-            ui.set("#Tier.TextSpans", Message.raw("???"));
-            ui.set("#BiomeLabel.TextSpans", Message.raw("???"));
-            ui.set("#RegionLabel.TextSpans", Message.raw("???"));
-            ui.set("#ZoneLabel.TextSpans", Message.raw("???"));
-            return;
-        }
+        ui.append("Hud/Biome/BiomeHud.ui");
 
         // TODO: pass original message through
         ui.set("#TierLabel.TextSpans", Message.raw(biomeInfo.tierName));

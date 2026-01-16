@@ -18,7 +18,6 @@ Toggle the GUI on/off using the following command:
 
 ## TODO
 
-* Figure out how to hide UI instead of using blank ui
 * Support [MultipleHud](https://github.com/Buuz135/MHUD) to allow rendering alongside other mods with custom HUDs
 * Improve UI
 * Show more information about the zone/tier (e.g. ore generation, mobs, etc.)
