@@ -15,25 +15,36 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.hypixel.hytale.server.core.universe.world.worldgen.IWorldGen;
 import com.hypixel.hytale.server.worldgen.biome.Biome;
 import com.hypixel.hytale.server.worldgen.chunk.ChunkGenerator;
 import com.hypixel.hytale.server.worldgen.chunk.ZoneBiomeResult;
-import com.hypixel.hytale.server.worldgen.loader.biome.BiomeJsonLoader;
 import com.hypixel.hytale.server.worldgen.zone.Zone;
 import com.hypixel.hytale.server.worldgen.zone.ZoneDiscoveryConfig;
+import com.n8chur.plugin.settings.BiomeDisplayUserSettingsStore;
 import com.n8chur.plugin.ui.BiomeHud;
+import com.n8chur.plugin.ui.BiomeHudProvider;
 
 import javax.annotation.Nonnull;
 
-public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
+public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore> {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     @Nonnull
+    private final BiomeDisplayUserSettingsStore userSettingsStore;
+
+    @Nonnull
+    private final BiomeHudProvider hudProvider;
+
+    @Nonnull
     private final Query<EntityStore> query;
 
-    public BlockUpdateSystem() {
+    public BiomeDisplayHudUpdateSystem(
+            @Nonnull BiomeDisplayUserSettingsStore userSettingsStore,
+            @Nonnull BiomeHudProvider hudProvider
+    ) {
+        this.userSettingsStore = userSettingsStore;
+        this.hudProvider = hudProvider;
         this.query = Query.and(Player.getComponentType());
     }
 
@@ -42,15 +53,20 @@ public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
                      @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
         final Holder<EntityStore> holder = EntityUtils.toHolder(index, archetypeChunk);
 
+        // TODO: Remove hud when player disconnects
+
         // Get player and return if not found
         Player player = holder.getComponent(Player.getComponentType());
         if (player == null) return;
 
-        // TODO: Hide hud when player disconnects
-
         // Get player's reference and return if not found
         PlayerRef playerRef = holder.getComponent(PlayerRef.getComponentType());
         if (playerRef == null) return;
+
+        if (!this.userSettingsStore.getIsEnabled(playerRef)) {
+            hideBiomeHud(player, playerRef);
+            return;
+        }
 
         // Get world and hide hud and return if not found
         World world = player.getWorld();
@@ -70,7 +86,7 @@ public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
     }
 
     private void hideBiomeHud(@Nonnull Player player, @Nonnull PlayerRef playerRef) {
-        BiomeDisplayPlugin.hudProvider.hideHud(player, playerRef);
+        this.hudProvider.hideHud(player, playerRef);
     }
 
     private void updateBiomeHud(ChunkGenerator generator, Player player, PlayerRef playerRef, World world) {
@@ -92,7 +108,7 @@ public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
         String tierName = getTierName(zone);
 
         BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName, tierName);
-        BiomeDisplayPlugin.hudProvider.updateHud(player, playerRef, biomeInfo);
+        this.hudProvider.updateHud(player, playerRef, biomeInfo);
     }
 
     private String getRegionName(Zone zone) {
