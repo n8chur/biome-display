@@ -1,10 +1,7 @@
 package com.n8chur.plugin;
 
 
-import com.hypixel.hytale.component.ArchetypeChunk;
-import com.hypixel.hytale.component.CommandBuffer;
-import com.hypixel.hytale.component.Holder;
-import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.logger.HytaleLogger;
@@ -20,7 +17,7 @@ import com.hypixel.hytale.server.worldgen.chunk.ChunkGenerator;
 import com.hypixel.hytale.server.worldgen.chunk.ZoneBiomeResult;
 import com.hypixel.hytale.server.worldgen.zone.Zone;
 import com.hypixel.hytale.server.worldgen.zone.ZoneDiscoveryConfig;
-import com.n8chur.plugin.settings.BiomeDisplayUserSettings;
+import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 import com.n8chur.plugin.ui.BiomeHud;
 import com.n8chur.plugin.ui.BiomeHudProvider;
 
@@ -31,7 +28,7 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     @Nonnull
-    private final BiomeDisplayUserSettings userSettings;
+    private ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
 
     @Nonnull
     private final BiomeHudProvider hudProvider;
@@ -40,10 +37,10 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
     private final Query<EntityStore> query;
 
     public BiomeDisplayHudUpdateSystem(
-            @Nonnull BiomeDisplayUserSettings userSettings,
+            @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType,
             @Nonnull BiomeHudProvider hudProvider
     ) {
-        this.userSettings = userSettings;
+        this.userSettingsComponentType = userSettingsComponentType;
         this.hudProvider = hudProvider;
         this.query = Query.and(Player.getComponentType());
     }
@@ -63,7 +60,12 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         PlayerRef playerRef = holder.getComponent(PlayerRef.getComponentType());
         if (playerRef == null) return;
 
-        if (!this.userSettings.getIsEnabled(playerRef)) {
+        Ref<EntityStore> entityRef = archetypeChunk.getReferenceTo(index);
+
+        BiomeDisplayUserSettingsComponent settings = store.getComponent(entityRef, userSettingsComponentType);
+        if (settings == null) return;
+
+        if (!settings.getIsEnabled()) {
             hideBiomeHud(player, playerRef);
             return;
         }
