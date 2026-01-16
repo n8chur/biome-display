@@ -36,45 +36,60 @@ public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
     }
 
     @Override
-    public void tick(float dt, int index, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
+    public void tick(float dt, int index, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk,
+                     @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
         final Holder<EntityStore> holder = EntityUtils.toHolder(index, archetypeChunk);
 
-        final Player player = holder.getComponent(Player.getComponentType());
+        // Get player and return if not found
+        Player player = holder.getComponent(Player.getComponentType());
         if (player == null) return;
 
-        final PlayerRef playerRef = holder.getComponent(PlayerRef.getComponentType());
+        // Get player's reference and return if not found
+        PlayerRef playerRef = holder.getComponent(PlayerRef.getComponentType());
         if (playerRef == null) return;
 
+        // Get world and return if not found
         World world = player.getWorld();
         if (world == null) return;
 
-        IWorldGen worldGen = world.getChunkStore().getGenerator();
-
-        if (!(worldGen instanceof ChunkGenerator generator)) {
+        // Get world generator and log if not an instance of ChunkGenerator
+        if (!(world.getChunkStore().getGenerator() instanceof ChunkGenerator generator)) {
             LOGGER.atInfo().log("No biome found.");
             return;
         }
 
+        // Extract biome information
+        logBiomeInfo(generator, playerRef, world);
+    }
+
+    private void logBiomeInfo(ChunkGenerator generator, PlayerRef playerRef, World world) {
         Vector3d position = playerRef.getTransform().getPosition();
-        int seed = (int)world.getWorldConfig().getSeed();
-        int x = (int)position.getX();
-        int z = (int)position.getZ();
+        int seed = (int) world.getWorldConfig().getSeed();
+        int x = (int) position.getX();
+        int z = (int) position.getZ();
+
+        // Get the biome result from the generator
         ZoneBiomeResult result = generator.getZoneBiomeResultAt(seed, x, z);
         Zone zone = result.getZoneResult().getZone();
         ZoneDiscoveryConfig discoveryConfig = zone.discoveryConfig();
 
         Biome biome = result.getBiome();
+
         String biomeName = biome.getName();
-
-        String regionNameKey = String.format("server.map.region.%s", zone.name());
-        Message regionMessage = Message.translation(regionNameKey);
-        String regionName = regionMessage.getAnsiMessage();
-
-        String zoneNameKey = String.format("server.map.zone.%s", discoveryConfig.zone());
-        Message zoneMessage = Message.translation(zoneNameKey);
-        String zoneName = zoneMessage.getAnsiMessage();
+        String regionName = getRegionName(zone);
+        String zoneName = getZoneName(discoveryConfig);
 
         LOGGER.atInfo().log("Biome: " + biomeName + " - " + regionName + " - " + zoneName);
+    }
+
+    private String getRegionName(Zone zone) {
+        String regionNameKey = String.format("server.map.region.%s", zone.name());
+        return Message.translation(regionNameKey).getAnsiMessage();
+    }
+
+    private String getZoneName(ZoneDiscoveryConfig discoveryConfig) {
+        String zoneNameKey = String.format("server.map.zone.%s", discoveryConfig.zone());
+        return Message.translation(zoneNameKey).getAnsiMessage();
     }
 
     @Nonnull
