@@ -20,16 +20,13 @@ public class BiomeHudProvider {
         } else {
             BiomeHud biomeHud = huds.get(playerRef);
             biomeHud.updateHud(biomeInfo);
-            player.getHudManager().setCustomHud(playerRef, biomeHud);
+            biomeHud.show();
         }
     }
 
     public void hideHud(@Nonnull Player player, @Nonnull PlayerRef playerRef) {
-        if (!huds.containsKey(playerRef)) {
-            return;
-        }
+        if (!huds.containsKey(playerRef)) return;
 
-//        BiomeHud biomeHud = huds.get(playerRef);
         huds.remove(playerRef);
 
         BlankHud blankHud = new BlankHud(playerRef);
