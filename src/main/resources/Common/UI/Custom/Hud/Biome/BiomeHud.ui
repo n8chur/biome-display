@@ -1,15 +1,20 @@
 Group #BiomeHud {
   LayoutMode: Top;
-  Padding: (Vertical: 48);
+  Padding: (Top: -5, Left: 800);
 
   Group #Content {
     Background: (TexturePath: "../../Common/TooltipDefaultBackground.png", Border: 20);
-    Padding: (Horizontal: 24, Vertical: 24);
-    LayoutMode: Center;
-    Anchor: (Height: 96, Width: 200);
+    Padding: (Horizontal: 36, Vertical: 24);
+    LayoutMode: Left;
+    Anchor: (Height: 118, Width: 220);
 
     Group #Info {
         LayoutMode: Top;
+
+        Label #TierLabel {
+          Style: LabelStyle(FontSize: 14);
+          Text: "Zone Tier";
+        }
 
         Label #BiomeLabel {
           Style: LabelStyle(FontSize: 12);

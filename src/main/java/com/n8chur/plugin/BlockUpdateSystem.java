@@ -89,7 +89,9 @@ public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
         ZoneDiscoveryConfig discoveryConfig = zone.discoveryConfig();
         String zoneName = getZoneName(discoveryConfig);
 
-        BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName);
+        String tierName = getTierName(zone);
+
+        BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName, tierName);
         BiomeDisplayPlugin.hudProvider.updateHud(player, playerRef, biomeInfo);
     }
 
@@ -101,6 +103,11 @@ public class BlockUpdateSystem extends EntityTickingSystem<EntityStore> {
     private String getZoneName(ZoneDiscoveryConfig discoveryConfig) {
         String zoneNameKey = String.format("server.map.zone.%s", discoveryConfig.zone());
         return Message.translation(zoneNameKey).getAnsiMessage();
+    }
+
+    private String getTierName(Zone zone) {
+        String regionNameKey = String.format("server.map.tier.%s", zone.name());
+        return Message.translation(regionNameKey).getAnsiMessage();
     }
 
     @Nonnull

@@ -25,10 +25,14 @@ public class BiomeHud extends CustomUIHud {
         @Nonnull
         public String zoneName;
 
-        public BiomeInfo(@Nonnull String biomeName, @Nonnull String regionName, @Nonnull String zoneName) {
+        @Nonnull
+        public String tierName;
+
+        public BiomeInfo(@Nonnull String biomeName, @Nonnull String regionName, @Nonnull String zoneName, @Nonnull String tierName) {
             this.biomeName = biomeName;
             this.regionName = regionName;
             this.zoneName = zoneName;
+            this.tierName = tierName;
         }
     }
 
@@ -44,6 +48,7 @@ public class BiomeHud extends CustomUIHud {
         ui.append("Hud/Biome/BiomeHud.ui");
 
         if (biomeInfo == null) {
+            ui.set("#Tier.TextSpans", Message.raw("Unknown"));
             ui.set("#BiomeLabel.TextSpans", Message.raw("Unknown"));
             ui.set("#RegionLabel.TextSpans", Message.raw("Unknown"));
             ui.set("#ZoneLabel.TextSpans", Message.raw("Unknown"));
@@ -51,6 +56,7 @@ public class BiomeHud extends CustomUIHud {
         }
 
         // TODO: pass original message through
+        ui.set("#TierLabel.TextSpans", Message.raw(biomeInfo.tierName));
         ui.set("#BiomeLabel.TextSpans", Message.raw(biomeInfo.biomeName));
         ui.set("#RegionLabel.TextSpans", Message.raw(biomeInfo.regionName));
         ui.set("#ZoneLabel.TextSpans", Message.raw(biomeInfo.zoneName));
