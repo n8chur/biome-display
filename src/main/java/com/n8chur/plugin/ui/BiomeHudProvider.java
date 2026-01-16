@@ -10,7 +10,6 @@ import com.n8chur.plugin.BiomeDisplayPlugin;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class BiomeHudProvider {
 

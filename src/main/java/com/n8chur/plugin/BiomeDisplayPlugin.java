@@ -37,6 +37,13 @@ public class BiomeDisplayPlugin extends JavaPlugin {
         PluginBase plugin = PluginManager.get().getPlugin(PluginIdentifier.fromString("Buuz135:MultipleHUD"));
         if (plugin != null) {
             BiomeDisplayPlugin.IS_MULTIPLEHUD_PRESENT = true;
+
+            try {
+                Class.forName("com.buuz135.mhud.MultipleHUD");
+                LOGGER.atInfo().log("MultipleHUD found and accessible.");
+            } catch (ClassNotFoundException e) {
+                LOGGER.atSevere().log("MultipleHUD plugin is loaded but the class cannot be accessed!");
+            }
         }
     }
 
