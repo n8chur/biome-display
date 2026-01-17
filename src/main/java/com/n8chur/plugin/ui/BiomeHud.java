@@ -13,18 +13,18 @@ public class BiomeHud extends CustomUIHud {
     public static class BiomeInfo {
 
         @Nonnull
-        public String biomeName;
+        public Message biomeName;
 
         @Nonnull
-        public String regionName;
+        public Message regionName;
 
         @Nonnull
-        public String zoneName;
+        public Message zoneName;
 
         @Nonnull
-        public String tierName;
+        public Message tierName;
 
-        public BiomeInfo(@Nonnull String biomeName, @Nonnull String regionName, @Nonnull String zoneName, @Nonnull String tierName) {
+        public BiomeInfo(@Nonnull Message biomeName, @Nonnull Message regionName, @Nonnull Message zoneName, @Nonnull Message tierName) {
             this.biomeName = biomeName;
             this.regionName = regionName;
             this.zoneName = zoneName;
@@ -45,10 +45,9 @@ public class BiomeHud extends CustomUIHud {
 
         ui.append("Hud/Biome/BiomeHud.ui");
 
-        // TODO: pass original message through
-        ui.set("#TierLabel.TextSpans", Message.raw(biomeInfo.tierName));
-        ui.set("#BiomeLabel.TextSpans", Message.raw(biomeInfo.biomeName));
-        ui.set("#RegionLabel.TextSpans", Message.raw(biomeInfo.regionName + ", " + biomeInfo.zoneName).bold(true));
+        ui.set("#TierLabel.TextSpans", biomeInfo.tierName);
+        ui.set("#BiomeLabel.TextSpans", biomeInfo.biomeName);
+        ui.set("#RegionLabel.TextSpans", Message.join(biomeInfo.regionName, Message.raw(", "), biomeInfo.zoneName).bold(true));
     }
 
     public void updateHud(BiomeInfo biomeInfo) {

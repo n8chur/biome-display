@@ -99,33 +99,33 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         ZoneBiomeResult result = generator.getZoneBiomeResultAt(seed, x, z);
 
         Biome biome = result.getBiome();
-        String biomeName = biome.getName();
+        Message biomeName = Message.raw(biome.getName());
 
         Zone zone = result.getZoneResult().getZone();
-        String regionName = getRegionName(zone);
+        Message regionName = getRegionName(zone);
 
         ZoneDiscoveryConfig discoveryConfig = zone.discoveryConfig();
-        String zoneName = getZoneName(discoveryConfig);
+        Message zoneName = getZoneName(discoveryConfig);
 
-        String tierName = getTierName(zone);
+        Message tierName = getTierName(zone);
 
         BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName, tierName);
         this.hudProvider.updateHud(player, playerRef, biomeInfo);
     }
 
-    private String getRegionName(Zone zone) {
+    private Message getRegionName(Zone zone) {
         String regionNameKey = String.format("server.map.region.%s", zone.name());
-        return Message.translation(regionNameKey).getAnsiMessage();
+        return Message.translation(regionNameKey);
     }
 
-    private String getZoneName(ZoneDiscoveryConfig discoveryConfig) {
+    private Message getZoneName(ZoneDiscoveryConfig discoveryConfig) {
         String zoneNameKey = String.format("server.map.zone.%s", discoveryConfig.zone());
-        return Message.translation(zoneNameKey).getAnsiMessage();
+        return Message.translation(zoneNameKey);
     }
 
-    private String getTierName(Zone zone) {
+    private Message getTierName(Zone zone) {
         String regionNameKey = String.format("server.map.tier.%s", zone.name());
-        return Message.translation(regionNameKey).getAnsiMessage();
+        return Message.translation(regionNameKey);
     }
 
     @Nonnull
