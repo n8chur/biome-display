@@ -2,6 +2,8 @@
 
 A mod for Hytale that displays the current biome information in the UI.
 
+If the [MultipleHUD](https://www.curseforge.com/hytale/mods/multiplehud) mod is present, this mod can be used alongside other mods that support multiple custom HUDS (e.g. [EyeSpy](https://www.curseforge.com/hytale/mods/eyespy)).
+
 ## Usage
 
 Toggle the GUI on/off using the following command:
