@@ -55,7 +55,7 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
         }
     }
 
-    private boolean enabled = false;
+    private boolean enabled = true;
     private HudPosition position = HudPosition.DEFAULT;
 
     public BiomeDisplayUserSettingsComponent() {
