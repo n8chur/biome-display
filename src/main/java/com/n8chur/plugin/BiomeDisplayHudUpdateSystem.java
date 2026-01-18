@@ -4,7 +4,6 @@ package com.n8chur.plugin;
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
-import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.EntityUtils;
@@ -19,38 +18,34 @@ import com.hypixel.hytale.server.worldgen.zone.Zone;
 import com.hypixel.hytale.server.worldgen.zone.ZoneDiscoveryConfig;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 import com.n8chur.plugin.ui.BiomeHud;
-import com.n8chur.plugin.ui.BiomeHudProvider;
+import com.n8chur.plugin.ui.BiomeHudManager;
 
 import javax.annotation.Nonnull;
 
 public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore> {
 
-    private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
+    @Nonnull
+    private final ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
 
     @Nonnull
-    private ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
-
-    @Nonnull
-    private final BiomeHudProvider hudProvider;
+    private final BiomeHudManager hudProvider;
 
     @Nonnull
     private final Query<EntityStore> query;
 
     public BiomeDisplayHudUpdateSystem(
             @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType,
-            @Nonnull BiomeHudProvider hudProvider
+            @Nonnull BiomeHudManager hudProvider
     ) {
         this.userSettingsComponentType = userSettingsComponentType;
         this.hudProvider = hudProvider;
-        this.query = Query.and(Player.getComponentType());
+        this.query = Query.and(Player.getComponentType(), PlayerRef.getComponentType());
     }
 
     @Override
     public void tick(float dt, int index, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk,
                      @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
         final Holder<EntityStore> holder = EntityUtils.toHolder(index, archetypeChunk);
-
-        // TODO: Remove hud when player disconnects
 
         // Get player and return if not found
         Player player = holder.getComponent(Player.getComponentType());

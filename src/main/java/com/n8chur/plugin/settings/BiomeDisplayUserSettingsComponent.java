@@ -12,10 +12,6 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
 
     public BiomeDisplayUserSettingsComponent() {}
 
-    public void enabled(boolean isEnabled) {
-        this.enabled = isEnabled;
-    }
-
     public boolean getIsEnabled() { return this.enabled; }
 
     public void toggleEnabled() {

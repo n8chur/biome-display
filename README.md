@@ -15,4 +15,4 @@ Toggle the GUI on/off using the following command:
 
 * Show more information about the zone/tier (e.g. ore generation, mobs, etc.)
 * Localize biome name
-* Optimizations (only update when needed, clear cache when user disconnects, etc.)
+* Optimizations (only update when needed, etc.)

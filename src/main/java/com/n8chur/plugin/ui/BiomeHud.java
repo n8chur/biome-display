@@ -10,26 +10,7 @@ import javax.annotation.Nullable;
 
 public class BiomeHud extends CustomUIHud {
 
-    public static class BiomeInfo {
-
-        @Nonnull
-        public Message biomeName;
-
-        @Nonnull
-        public Message regionName;
-
-        @Nonnull
-        public Message zoneName;
-
-        @Nonnull
-        public Message tierName;
-
-        public BiomeInfo(@Nonnull Message biomeName, @Nonnull Message regionName, @Nonnull Message zoneName, @Nonnull Message tierName) {
-            this.biomeName = biomeName;
-            this.regionName = regionName;
-            this.zoneName = zoneName;
-            this.tierName = tierName;
-        }
+    public record BiomeInfo(@Nonnull Message biomeName, @Nonnull Message regionName, @Nonnull Message zoneName, @Nonnull Message tierName) {
     }
 
     @Nullable
@@ -52,5 +33,10 @@ public class BiomeHud extends CustomUIHud {
 
     public void updateHud(BiomeInfo biomeInfo) {
         this.biomeInfo = biomeInfo;
+    }
+
+    @Nullable
+    public BiomeInfo getBiomeInfo() {
+        return biomeInfo;
     }
 }

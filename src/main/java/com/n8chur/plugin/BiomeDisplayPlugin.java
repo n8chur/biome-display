@@ -4,6 +4,7 @@ import com.hypixel.hytale.common.plugin.PluginIdentifier;
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.event.EventPriority;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
@@ -11,21 +12,15 @@ import com.hypixel.hytale.server.core.plugin.PluginBase;
 import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
-import com.n8chur.plugin.ui.BiomeHudProvider;
+import com.n8chur.plugin.ui.BiomeHudManager;
 
 import javax.annotation.Nonnull;
 
 public class BiomeDisplayPlugin extends JavaPlugin {
 
-    public static boolean isMultipleHUDPresent() { return IS_MULTIPLEHUD_PRESENT; }
-
-    private static boolean IS_MULTIPLEHUD_PRESENT = false;
-
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    private final BiomeDisplayUserSettingsComponent userSettingsStore = new BiomeDisplayUserSettingsComponent();
-
-    private final BiomeHudProvider hudProvider = new BiomeHudProvider();
+    private final BiomeHudManager hudProvider = new BiomeHudManager();
 
     public BiomeDisplayPlugin(@Nonnull JavaPluginInit init) {
         super(init);
@@ -36,10 +31,9 @@ public class BiomeDisplayPlugin extends JavaPlugin {
     protected void start() {
         PluginBase plugin = PluginManager.get().getPlugin(PluginIdentifier.fromString("Buuz135:MultipleHUD"));
         if (plugin != null) {
-            BiomeDisplayPlugin.IS_MULTIPLEHUD_PRESENT = true;
-
             try {
                 Class.forName("com.buuz135.mhud.MultipleHUD");
+                hudProvider.setMultipleHUDPresent(true);
                 LOGGER.atInfo().log("MultipleHUD found and accessible.");
             } catch (ClassNotFoundException e) {
                 LOGGER.atSevere().log("MultipleHUD plugin is loaded but the class cannot be accessed!");
@@ -69,8 +63,16 @@ public class BiomeDisplayPlugin extends JavaPlugin {
                 Ref<EntityStore> ref = event.getPlayer().getReference();
                 if (ref == null) return;
 
-                Store<EntityStore> store = event.getPlayer().getReference().getStore();
+                Store<EntityStore> store = ref.getStore();
                 store.ensureAndGetComponent(ref, userSettingsComponentType);
+            }
+        );
+
+        getEventRegistry().registerGlobal(
+            EventPriority.NORMAL,
+            PlayerDisconnectEvent.class,
+            event -> {
+                hudProvider.onPlayerLeave(event.getPlayerRef());
             }
         );
     }
