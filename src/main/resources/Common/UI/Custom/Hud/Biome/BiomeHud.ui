@@ -1,6 +1,4 @@
 Group #BiomeHud {
-  LayoutMode: Left;
-  Anchor: (Left: 20, Bottom: 20, Height: 128);
 
   Group #Content {
     Background: (TexturePath: "../../Common/TooltipDefaultBackground.png", Border: 20);

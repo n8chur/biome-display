@@ -79,14 +79,14 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         }
 
         // Update biome hud
-        updateBiomeHud(generator, player, playerRef, world);
+        updateBiomeHud(generator, player, playerRef, world, settings);
     }
 
     private void hideBiomeHud(@Nonnull Player player, @Nonnull PlayerRef playerRef) {
         this.hudManager.hideHud(player, playerRef);
     }
 
-    private void updateBiomeHud(ChunkGenerator generator, Player player, PlayerRef playerRef, World world) {
+    private void updateBiomeHud(ChunkGenerator generator, Player player, PlayerRef playerRef, World world, BiomeDisplayUserSettingsComponent settings) {
         Vector3d position = playerRef.getTransform().getPosition();
         int seed = (int) world.getWorldConfig().getSeed();
         int x = (int) position.getX();
@@ -105,7 +105,7 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         Message tierName = getTierName(zone);
 
         BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName, tierName);
-        this.hudManager.updateHud(player, playerRef, biomeInfo);
+        this.hudManager.updateHud(player, playerRef, biomeInfo, settings.getPosition());
     }
 
     private Message getRegionName(Zone zone) {

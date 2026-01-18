@@ -5,6 +5,7 @@ import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -23,15 +24,16 @@ public class BiomeHudManager {
         isMultipleHUDPresent = multipleHUDPresent;
     }
 
-    public void updateHud(@Nonnull Player player, @Nonnull PlayerRef playerRef, @Nonnull BiomeHud.BiomeInfo biomeInfo) {
+    public void updateHud(@Nonnull Player player, @Nonnull PlayerRef playerRef, @Nonnull BiomeHud.BiomeInfo biomeInfo, @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position) {
         boolean isNew = !huds.containsKey(playerRef);
         BiomeHud hud = huds.computeIfAbsent(playerRef, BiomeHud::new);
 
-        if (biomeInfo.equals(hud.getBiomeInfo())) {
+        if (biomeInfo.equals(hud.getBiomeInfo()) && position == hud.getPosition()) {
             return;
         }
 
-        hud.updateHud(biomeInfo);
+        hud.updateBiomeInfo(biomeInfo);
+        hud.updatePosition(position);
 
         if (isNew) {
             show(player, playerRef, hud);
@@ -44,7 +46,7 @@ public class BiomeHudManager {
         if (!huds.containsKey(playerRef)) return;
 
         BiomeHud hud = huds.remove(playerRef);
-        hud.updateHud(null);
+        hud.updateBiomeInfo(null);
         if (isMultipleHUDPresent) {
             setMultipleHUDCustomHUD(player, playerRef, hud);
             this.hasLoggedMultipleHUDAccessError = false;
