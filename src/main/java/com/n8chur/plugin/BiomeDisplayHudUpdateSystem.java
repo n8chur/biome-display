@@ -28,17 +28,17 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
     private final ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
 
     @Nonnull
-    private final BiomeHudManager hudProvider;
+    private final BiomeHudManager hudManager;
 
     @Nonnull
     private final Query<EntityStore> query;
 
     public BiomeDisplayHudUpdateSystem(
             @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType,
-            @Nonnull BiomeHudManager hudProvider
+            @Nonnull BiomeHudManager hudManager
     ) {
         this.userSettingsComponentType = userSettingsComponentType;
-        this.hudProvider = hudProvider;
+        this.hudManager = hudManager;
         this.query = Query.and(Player.getComponentType(), PlayerRef.getComponentType());
     }
 
@@ -83,7 +83,7 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
     }
 
     private void hideBiomeHud(@Nonnull Player player, @Nonnull PlayerRef playerRef) {
-        this.hudProvider.hideHud(player, playerRef);
+        this.hudManager.hideHud(player, playerRef);
     }
 
     private void updateBiomeHud(ChunkGenerator generator, Player player, PlayerRef playerRef, World world) {
@@ -105,7 +105,7 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         Message tierName = getTierName(zone);
 
         BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName, tierName);
-        this.hudProvider.updateHud(player, playerRef, biomeInfo);
+        this.hudManager.updateHud(player, playerRef, biomeInfo);
     }
 
     private Message getRegionName(Zone zone) {
