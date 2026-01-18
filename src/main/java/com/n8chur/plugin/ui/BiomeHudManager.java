@@ -15,9 +15,10 @@ public class BiomeHudManager {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
+    private static final String BIOME_DISPLAY_HUD_ID = "BiomeDisplay_HUD";
+
     private final Map<PlayerRef, BiomeHud> huds = new HashMap<>();
 
-    private boolean hasLoggedMultipleHUDAccessError = false;
     private boolean isMultipleHUDPresent = false;
 
     public void setMultipleHUDPresent(boolean multipleHUDPresent) {
@@ -46,11 +47,10 @@ public class BiomeHudManager {
         if (!huds.containsKey(playerRef)) return;
 
         BiomeHud hud = huds.remove(playerRef);
-        hud.updateBiomeInfo(null);
         if (isMultipleHUDPresent) {
-            setMultipleHUDCustomHUD(player, playerRef, hud);
-            this.hasLoggedMultipleHUDAccessError = false;
+            hideMultipleHUDCustomHUD(player, playerRef);
         } else {
+            hud.updateBiomeInfo(null);
             show(player, playerRef, hud);
         }
     }
@@ -76,23 +76,10 @@ public class BiomeHudManager {
     }
 
     private void setMultipleHUDCustomHUD(@Nonnull Player player, @Nonnull PlayerRef playerRef, @Nonnull CustomUIHud hud) {
-        if (!canAccessMultipleHUD()) {
-            if (!this.hasLoggedMultipleHUDAccessError) {
-                LOGGER.atSevere().log("Cannot access MultipleHUD even though the plugin is loaded!");
-                this.hasLoggedMultipleHUDAccessError = true;
-            }
-            return;
-        }
-
-        MultipleHUD.getInstance().setCustomHud(player, playerRef, "BiomeDisplay_HUD", hud);
+        MultipleHUD.getInstance().setCustomHud(player, playerRef, BIOME_DISPLAY_HUD_ID, hud);
     }
 
-    private boolean canAccessMultipleHUD() {
-        try {
-            Class.forName("com.buuz135.mhud.MultipleHUD");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+    private void hideMultipleHUDCustomHUD(@Nonnull Player player, @Nonnull PlayerRef playerRef) {
+        MultipleHUD.getInstance().hideCustomHud(player, playerRef, BIOME_DISPLAY_HUD_ID);
     }
 }
