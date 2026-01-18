@@ -6,9 +6,11 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.ParseResult;
 import com.hypixel.hytale.server.core.command.system.arguments.system.Argument;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
+import com.hypixel.hytale.server.core.command.system.arguments.types.SingleArgumentType;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -72,14 +74,30 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
         private final RequiredArg<String> horizontalArg;
 
         public PositionSubCommand(@Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType) {
-            super("position", "The position of the biome display HUD.");
+            super("position", "The position of the biome display HUD (e.g. \"bottom right\".");
 
             this.userSettingsComponentType = userSettingsComponentType;
 
             this.setPermissionGroup(GameMode.Adventure);
 
-            this.verticalArg = withRequiredArg("vertical", "Vertical position (top, middle, bottom)", ArgTypes.STRING);
-            this.horizontalArg = withRequiredArg("horizontal", "Horizontal position (left, center, right)", ArgTypes.STRING);
+            this.verticalArg = withRequiredArg(
+                "vertical",
+                "Vertical position",
+                new SingleArgumentType<String>(
+                    "Vertical Position",
+                    "Can be \"top\", \"middle\", or \"bottom\"",
+                    new String[]{"\"top\"", "\"middle\"", "\"bottom\""
+                }) { public String parse(String input, ParseResult parseResult) { return input; } }
+            );
+            this.horizontalArg = withRequiredArg(
+                "horizontal",
+                "Horizontal position",
+                new SingleArgumentType<String>(
+                    "Horizontal Position",
+                    "Can be \"left\", \"center\", or \"right\"",
+                    new String[]{"\"left\"", "\"center\"", "\"right\""
+                }) { public String parse(String input, ParseResult parseResult) { return input; } }
+            );
         }
 
         @Override
@@ -113,7 +131,7 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
 
             BiomeDisplayUserSettingsComponent.HudPosition position = new BiomeDisplayUserSettingsComponent.HudPosition(verticalPosition, horizontalPosition);
             settings.setPosition(position);
-            playerRef.sendMessage(Message.raw("HUD position set to " + position.toString()));
+            playerRef.sendMessage(Message.raw("HUD position set to " + position));
         }
     }
 }
