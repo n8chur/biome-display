@@ -6,13 +6,22 @@ If the [MultipleHUD](https://www.curseforge.com/hytale/mods/multiplehud) mod is 
 
 ## Usage
 
-Toggle the GUI on/off using the following command:
+### Hide or show the HUD
+
 ```
-/biome
+/biome toggle
 ```
+
+### Move the position of the HUD
+
+```
+/biome position top center
+/biome position middle right
+/biome position bottom left
+```
+
 
 ## TODO
 
 * Show more information about the zone/tier (e.g. ore generation, mobs, etc.)
 * Localize biome name
-* Optimizations (only update when needed, etc.)
