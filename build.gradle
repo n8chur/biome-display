@@ -29,8 +29,8 @@ repositories {
 dependencies {
     implementation(files("$hytaleHome/install/$patchline/package/game/latest/Server/HytaleServer.jar"))
 
-    compileOnly("com.buuz135:MultipleHUD:1.0.1")
-    runtimeOnly("com.buuz135:MultipleHUD:1.0.1")
+    compileOnly("com.buuz135:MultipleHUD:1.0.2")
+    runtimeOnly("com.buuz135:MultipleHUD:1.0.2")
 }
 
 // Create the working directory to run the server if it does not already exist.
