@@ -179,12 +179,17 @@ public class BiomeHud extends CustomUIHud {
         return position;
     }
 
+    @Nonnull
+    public BiomeDisplayUserSettingsComponent.HudSize getSize() {
+        return size;
+    }
+
     public static class BiomeInfo {
 
-        private @Nonnull String biomeNameKey;
-        private @Nonnull String regionNameKey;
-        private @Nonnull String zoneNameKey;
-        private @Nonnull String tierNameKey;
+        private final @Nonnull String biomeNameKey;
+        private final @Nonnull String regionNameKey;
+        private final @Nonnull String zoneNameKey;
+        private final @Nonnull String tierNameKey;
 
         public BiomeInfo(
             @Nonnull String biomeNameKey,
@@ -217,6 +222,30 @@ public class BiomeHud extends CustomUIHud {
             }
 
             return Message.translation(resolvedKey);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            BiomeInfo biomeInfo = (BiomeInfo) o;
+            return Objects.equals(
+                biomeNameKey,
+                biomeInfo.biomeNameKey
+            ) && Objects.equals(
+                regionNameKey,
+                biomeInfo.regionNameKey
+            ) && Objects.equals(
+                zoneNameKey,
+                biomeInfo.zoneNameKey
+            ) && Objects.equals(
+                tierNameKey,
+                biomeInfo.tierNameKey
+            );
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(biomeNameKey, regionNameKey, zoneNameKey, tierNameKey);
         }
     }
 }

@@ -9,6 +9,7 @@ import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class BiomeHudManager {
 
@@ -33,6 +34,15 @@ public class BiomeHudManager {
     ) {
         boolean isNew = !huds.containsKey(playerRef);
         BiomeHud hud = huds.computeIfAbsent(playerRef, BiomeHud::new);
+
+        if (
+            !isNew
+            && Objects.equals(hud.getBiomeInfo(), biomeInfo)
+            && Objects.equals(hud.getPosition(), position)
+            && hud.getSize() == size
+        ) {
+            return;
+        }
 
         hud.updateBiomeInfo(biomeInfo);
         hud.updatePosition(position);
