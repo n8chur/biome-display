@@ -4,6 +4,7 @@ import com.buuz135.mhud.MultipleHUD;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
+import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 
@@ -29,17 +30,17 @@ public class BiomeHudManager {
         boolean isNew = !huds.containsKey(playerRef);
         BiomeHud hud = huds.computeIfAbsent(playerRef, BiomeHud::new);
 
-        if (biomeInfo.equals(hud.getBiomeInfo()) && position == hud.getPosition()) {
-            return;
-        }
-
         hud.updateBiomeInfo(biomeInfo);
         hud.updatePosition(position);
 
         if (isNew) {
-            show(player, playerRef, hud);
+            if (isMultipleHUDPresent) {
+                MultipleHUD.getInstance().setCustomHud(player, playerRef, BIOME_DISPLAY_HUD_ID, hud);
+            } else {
+                player.getHudManager().setCustomHud(playerRef, hud);
+            }
         } else {
-            update(player, playerRef, hud);
+            hud.update();
         }
     }
 
@@ -47,39 +48,15 @@ public class BiomeHudManager {
         if (!huds.containsKey(playerRef)) return;
 
         BiomeHud hud = huds.remove(playerRef);
+        hud.updateBiomeInfo(null);
+        hud.clear();
+
         if (isMultipleHUDPresent) {
-            hideMultipleHUDCustomHUD(player, playerRef);
-        } else {
-            hud.updateBiomeInfo(null);
-            show(player, playerRef, hud);
+            MultipleHUD.getInstance().hideCustomHud(player, playerRef, BIOME_DISPLAY_HUD_ID);
         }
     }
 
     public void onPlayerLeave(@Nonnull PlayerRef playerRef) {
         huds.remove(playerRef);
-    }
-
-    private void show(@Nonnull Player player, @Nonnull PlayerRef playerRef, @Nonnull CustomUIHud hud) {
-        if (isMultipleHUDPresent) {
-            setMultipleHUDCustomHUD(player, playerRef, hud);
-        } else {
-            player.getHudManager().setCustomHud(playerRef, hud);
-        }
-    }
-
-    private void update(@Nonnull Player player, @Nonnull PlayerRef playerRef, @Nonnull CustomUIHud hud) {
-        if (isMultipleHUDPresent) {
-            setMultipleHUDCustomHUD(player, playerRef, hud);
-        } else {
-            hud.show();
-        }
-    }
-
-    private void setMultipleHUDCustomHUD(@Nonnull Player player, @Nonnull PlayerRef playerRef, @Nonnull CustomUIHud hud) {
-        MultipleHUD.getInstance().setCustomHud(player, playerRef, BIOME_DISPLAY_HUD_ID, hud);
-    }
-
-    private void hideMultipleHUDCustomHUD(@Nonnull Player player, @Nonnull PlayerRef playerRef) {
-        MultipleHUD.getInstance().hideCustomHud(player, playerRef, BIOME_DISPLAY_HUD_ID);
     }
 }
