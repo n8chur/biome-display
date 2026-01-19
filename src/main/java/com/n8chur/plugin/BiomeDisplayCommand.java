@@ -30,6 +30,7 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
 
         addSubCommand(new ToggleSubCommand(userSettingsComponentType));
         addSubCommand(new PositionSubCommand(userSettingsComponentType));
+        addSubCommand(new SizeSubCommand(userSettingsComponentType));
     }
 
     private static class ToggleSubCommand extends AbstractPlayerCommand {
@@ -144,6 +145,64 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
             );
             settings.setPosition(position);
             playerRef.sendMessage(Message.raw("HUD position set to " + position));
+        }
+    }
+
+    private static class SizeSubCommand extends AbstractPlayerCommand {
+
+        @Nonnull
+        private final ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
+
+        private final RequiredArg<String> sizeArg;
+
+        public SizeSubCommand(
+            @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType
+        ) {
+            super("size", "Sets the size of the HUD element.");
+
+            this.userSettingsComponentType = userSettingsComponentType;
+
+            this.setPermissionGroup(GameMode.Adventure);
+
+            this.sizeArg = withRequiredArg(
+                "size",
+                "HUD size",
+                new SingleArgumentType<String>(
+                    "HUD size",
+                    "Can be \"small\", \"medium\", or \"large\"",
+                    "\"small\"", "\"medium\"", "\"large\""
+                ) {
+                    public String parse(String input, ParseResult parseResult) {
+                        return input;
+                    }
+                }
+            );
+        }
+
+        @Override
+        protected void execute(
+            @NonNullDecl CommandContext ctx,
+            @NonNullDecl Store<EntityStore> store,
+            @NonNullDecl Ref<EntityStore> ref,
+            @NonNullDecl PlayerRef playerRef,
+            @NonNullDecl World world
+        ) {
+            BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(
+                ref,
+                this.userSettingsComponentType
+            );
+
+            String value = this.sizeArg.get(ctx).toUpperCase();
+
+            BiomeDisplayUserSettingsComponent.HudSize size;
+            try {
+                size = BiomeDisplayUserSettingsComponent.HudSize.valueOf(value);
+            } catch (IllegalArgumentException e) {
+                playerRef.sendMessage(Message.raw("Invalid size. Available: small, medium, large"));
+                return;
+            }
+
+            settings.setSize(size);
         }
     }
 }

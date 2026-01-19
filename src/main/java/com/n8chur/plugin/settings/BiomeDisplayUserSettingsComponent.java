@@ -26,9 +26,17 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
                 c -> c.position.horizontal.toString()
             )
             .add()
+            .append(
+                new KeyedCodec<>("BiomeDisplaySize", Codec.STRING),
+                (c, v) -> c.size = HudSize.valueOf(v),
+                c -> c.size.toString()
+            )
+            .add()
             .build();
+
     private boolean enabled = true;
     private HudPosition position = HudPosition.DEFAULT;
+    private HudSize size = HudSize.MEDIUM;
 
     public BiomeDisplayUserSettingsComponent() {
     }
@@ -37,17 +45,17 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
         return this.enabled;
     }
 
-    public void toggleEnabled() {
-        this.enabled = !enabled;
-    }
+    public void toggleEnabled() { this.enabled = !enabled;  }
 
-    public HudPosition getPosition() {
-        return this.position;
-    }
+    public HudPosition getPosition() { return this.position; }
 
     public void setPosition(HudPosition position) {
         this.position = position;
     }
+
+    public HudSize getSize() { return this.size; }
+
+    public void setSize(HudSize size) { this.size = size; }
 
     @Override
     public Component<EntityStore> clone() {
@@ -101,5 +109,11 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
             CENTER,
             RIGHT
         }
+    }
+
+    public enum HudSize {
+        SMALL,
+        MEDIUM,
+        LARGE
     }
 }

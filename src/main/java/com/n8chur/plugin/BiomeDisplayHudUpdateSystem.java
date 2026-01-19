@@ -113,7 +113,7 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         Message tierName = getTierName(zone);
 
         BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName, tierName);
-        this.hudManager.updateHud(player, playerRef, biomeInfo, settings.getPosition());
+        this.hudManager.updateHud(player, playerRef, biomeInfo, settings.getPosition(), settings.getSize());
     }
 
     private Message getRegionName(Zone zone) {

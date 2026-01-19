@@ -28,13 +28,15 @@ public class BiomeHudManager {
         @Nonnull Player player,
         @Nonnull PlayerRef playerRef,
         @Nonnull BiomeHud.BiomeInfo biomeInfo,
-        @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position
+        @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position,
+        @Nonnull BiomeDisplayUserSettingsComponent.HudSize size
     ) {
         boolean isNew = !huds.containsKey(playerRef);
         BiomeHud hud = huds.computeIfAbsent(playerRef, BiomeHud::new);
 
         hud.updateBiomeInfo(biomeInfo);
         hud.updatePosition(position);
+        hud.updateSize(size);
 
         if (isNew) {
             if (isMultipleHUDPresent) {

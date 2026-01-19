@@ -1,3 +1,21 @@
+@TierLabelSmallStyle = LabelStyle(FontSize: 16);
+@TierLabelMediumStyle = LabelStyle(FontSize: 24);
+@TierLabelLargeStyle = LabelStyle(FontSize: 32);
+
+@BiomeLabelSmallStyle = LabelStyle(FontSize: 12, TextColor: #aaaaaa);
+@BiomeLabelMediumStyle = LabelStyle(FontSize: 18, TextColor: #aaaaaa);
+@BiomeLabelLargeStyle = LabelStyle(FontSize: 24, TextColor: #aaaaaa);
+
+@RegionLabelSmallStyle = LabelStyle(FontSize: 12, TextColor: #5555ff, RenderBold: true);
+@RegionLabelMediumStyle = LabelStyle(FontSize: 18, TextColor: #5555ff, RenderBold: true);
+@RegionLabelLargeStyle = LabelStyle(FontSize: 24, TextColor: #5555ff, RenderBold: true);
+
+@AnchorHeightSmall = 98;
+@AnchorHeightMedium = 128;
+@AnchorHeightLarge = 154;
+
+@AnchorPadding = 20;
+
 Group #BiomeHud {
 
   Group #Content {
@@ -10,18 +28,15 @@ Group #BiomeHud {
         Padding: (Right: 10);
 
         Label #TierLabel {
-          Style: LabelStyle(FontSize: 24);
-          Text: "Zone Tier";
+          Style: @TierLabelMediumStyle;
         }
 
         Label #BiomeLabel {
-          Style: (FontSize: 18, TextColor: #aaaaaa);
-          Text: "Biome Name";
+          Style: @BiomeLabelMediumStyle;
         }
 
         Label #RegionLabel {
-          Style: (FontSize: 18, TextColor: #5555ff);
-          Text: "Biome Name";
+          Style: @RegionLabelSmallStyle;
         }
     }
   }
