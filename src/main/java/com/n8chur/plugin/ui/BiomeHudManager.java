@@ -3,8 +3,6 @@ package com.n8chur.plugin.ui;
 import com.buuz135.mhud.MultipleHUD;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
-import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 
@@ -26,7 +24,12 @@ public class BiomeHudManager {
         isMultipleHUDPresent = multipleHUDPresent;
     }
 
-    public void updateHud(@Nonnull Player player, @Nonnull PlayerRef playerRef, @Nonnull BiomeHud.BiomeInfo biomeInfo, @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position) {
+    public void updateHud(
+        @Nonnull Player player,
+        @Nonnull PlayerRef playerRef,
+        @Nonnull BiomeHud.BiomeInfo biomeInfo,
+        @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position
+    ) {
         boolean isNew = !huds.containsKey(playerRef);
         BiomeHud hud = huds.computeIfAbsent(playerRef, BiomeHud::new);
 

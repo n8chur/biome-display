@@ -14,14 +14,10 @@ import javax.annotation.Nullable;
 
 public class BiomeHud extends CustomUIHud {
 
-    public record BiomeInfo(@Nonnull Message biomeName, @Nonnull Message regionName, @Nonnull Message zoneName, @Nonnull Message tierName) {
-    }
-
     @Nullable
     private BiomeInfo biomeInfo;
     @Nonnull
     private BiomeDisplayUserSettingsComponent.HudPosition position = BiomeDisplayUserSettingsComponent.HudPosition.DEFAULT;
-
     public BiomeHud(@Nonnull PlayerRef playerRef) {
         super(playerRef);
     }
@@ -44,7 +40,10 @@ public class BiomeHud extends CustomUIHud {
         if (this.biomeInfo != null) {
             ui.set("#TierLabel.TextSpans", this.biomeInfo.tierName);
             ui.set("#BiomeLabel.TextSpans", this.biomeInfo.biomeName);
-            ui.set("#RegionLabel.TextSpans", Message.join(this.biomeInfo.regionName, Message.raw(", "), this.biomeInfo.zoneName).bold(true));
+            ui.set(
+                "#RegionLabel.TextSpans",
+                Message.join(this.biomeInfo.regionName, Message.raw(", "), this.biomeInfo.zoneName).bold(true)
+            );
 
             setPosition(this.position, ui);
         }
@@ -52,7 +51,10 @@ public class BiomeHud extends CustomUIHud {
         super.update(clear, ui);
     }
 
-    private void setPosition(@Nonnull BiomeDisplayUserSettingsComponent.HudPosition position, @Nonnull UICommandBuilder ui) {
+    private void setPosition(
+        @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position,
+        @Nonnull UICommandBuilder ui
+    ) {
         Anchor anchor = new Anchor();
         anchor.setHeight(Value.of(128));
 
@@ -103,5 +105,13 @@ public class BiomeHud extends CustomUIHud {
     @Nonnull
     public BiomeDisplayUserSettingsComponent.HudPosition getPosition() {
         return position;
+    }
+
+    public record BiomeInfo(
+        @Nonnull Message biomeName,
+        @Nonnull Message regionName,
+        @Nonnull Message zoneName,
+        @Nonnull Message tierName
+    ) {
     }
 }

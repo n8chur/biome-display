@@ -1,7 +1,10 @@
 package com.n8chur.plugin;
 
 import com.hypixel.hytale.common.plugin.PluginIdentifier;
-import com.hypixel.hytale.component.*;
+import com.hypixel.hytale.component.ComponentRegistryProxy;
+import com.hypixel.hytale.component.ComponentType;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.event.EventPriority;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
@@ -24,7 +27,8 @@ public class BiomeDisplayPlugin extends JavaPlugin {
 
     public BiomeDisplayPlugin(@Nonnull JavaPluginInit init) {
         super(init);
-        LOGGER.atInfo().log("Initializing " + this.getName() + " version " + this.getManifest().getVersion().toString());
+        LOGGER.atInfo()
+            .log("Initializing " + this.getName() + " version " + this.getManifest().getVersion().toString());
     }
 
     @Override

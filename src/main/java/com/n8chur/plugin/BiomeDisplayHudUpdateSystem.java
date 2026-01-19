@@ -34,8 +34,8 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
     private final Query<EntityStore> query;
 
     public BiomeDisplayHudUpdateSystem(
-            @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType,
-            @Nonnull BiomeHudManager hudManager
+        @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType,
+        @Nonnull BiomeHudManager hudManager
     ) {
         this.userSettingsComponentType = userSettingsComponentType;
         this.hudManager = hudManager;
@@ -43,8 +43,10 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
     }
 
     @Override
-    public void tick(float dt, int index, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk,
-                     @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
+    public void tick(
+        float dt, int index, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk,
+        @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer
+    ) {
         final Holder<EntityStore> holder = EntityUtils.toHolder(index, archetypeChunk);
 
         // Get player and return if not found
@@ -86,7 +88,13 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         this.hudManager.hideHud(player, playerRef);
     }
 
-    private void updateBiomeHud(ChunkGenerator generator, Player player, PlayerRef playerRef, World world, BiomeDisplayUserSettingsComponent settings) {
+    private void updateBiomeHud(
+        ChunkGenerator generator,
+        Player player,
+        PlayerRef playerRef,
+        World world,
+        BiomeDisplayUserSettingsComponent settings
+    ) {
         Vector3d position = playerRef.getTransform().getPosition();
         int seed = (int) world.getWorldConfig().getSeed();
         int x = (int) position.getX();

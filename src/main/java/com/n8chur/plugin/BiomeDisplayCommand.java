@@ -7,11 +7,8 @@ import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.ParseResult;
-import com.hypixel.hytale.server.core.command.system.arguments.system.Argument;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
-import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.arguments.types.SingleArgumentType;
-import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -24,13 +21,10 @@ import javax.annotation.Nonnull;
 
 public class BiomeDisplayCommand extends AbstractCommandCollection {
 
-    @Nonnull
-    private final ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
-
-    public BiomeDisplayCommand(@Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType) {
+    public BiomeDisplayCommand(
+        @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType
+    ) {
         super("biome", "Manage the biome display HUD.");
-
-        this.userSettingsComponentType = userSettingsComponentType;
 
         this.setPermissionGroup(GameMode.Adventure);
 
@@ -43,7 +37,9 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
         @Nonnull
         private final ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
 
-        public ToggleSubCommand(@Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType) {
+        public ToggleSubCommand(
+            @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType
+        ) {
             super("toggle", "Toggles the biome display HUD.");
 
             this.userSettingsComponentType = userSettingsComponentType;
@@ -73,7 +69,9 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
         private final RequiredArg<String> verticalArg;
         private final RequiredArg<String> horizontalArg;
 
-        public PositionSubCommand(@Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType) {
+        public PositionSubCommand(
+            @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType
+        ) {
             super("position", "The position of the biome display HUD (e.g. \"bottom right\".");
 
             this.userSettingsComponentType = userSettingsComponentType;
@@ -86,8 +84,12 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
                 new SingleArgumentType<String>(
                     "Vertical Position",
                     "Can be \"top\", \"middle\", or \"bottom\"",
-                    new String[]{"\"top\"", "\"middle\"", "\"bottom\""
-                }) { public String parse(String input, ParseResult parseResult) { return input; } }
+                    "\"top\"", "\"middle\"", "\"bottom\""
+                ) {
+                    public String parse(String input, ParseResult parseResult) {
+                        return input;
+                    }
+                }
             );
             this.horizontalArg = withRequiredArg(
                 "horizontal",
@@ -95,20 +97,27 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
                 new SingleArgumentType<String>(
                     "Horizontal Position",
                     "Can be \"left\", \"center\", or \"right\"",
-                    new String[]{"\"left\"", "\"center\"", "\"right\""
-                }) { public String parse(String input, ParseResult parseResult) { return input; } }
+                    "\"left\"", "\"center\"", "\"right\""
+                ) {
+                    public String parse(String input, ParseResult parseResult) {
+                        return input;
+                    }
+                }
             );
         }
 
         @Override
         protected void execute(
-                @NonNullDecl CommandContext ctx,
-                @NonNullDecl Store<EntityStore> store,
-                @NonNullDecl Ref<EntityStore> ref,
-                @NonNullDecl PlayerRef playerRef,
-                @NonNullDecl World world
+            @NonNullDecl CommandContext ctx,
+            @NonNullDecl Store<EntityStore> store,
+            @NonNullDecl Ref<EntityStore> ref,
+            @NonNullDecl PlayerRef playerRef,
+            @NonNullDecl World world
         ) {
-            BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(ref, this.userSettingsComponentType);
+            BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(
+                ref,
+                this.userSettingsComponentType
+            );
 
             String vertical = this.verticalArg.get(ctx).toUpperCase();
             String horizontal = this.horizontalArg.get(ctx).toUpperCase();
@@ -129,7 +138,10 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
                 return;
             }
 
-            BiomeDisplayUserSettingsComponent.HudPosition position = new BiomeDisplayUserSettingsComponent.HudPosition(verticalPosition, horizontalPosition);
+            BiomeDisplayUserSettingsComponent.HudPosition position = new BiomeDisplayUserSettingsComponent.HudPosition(
+                verticalPosition,
+                horizontalPosition
+            );
             settings.setPosition(position);
             playerRef.sendMessage(Message.raw("HUD position set to " + position));
         }
