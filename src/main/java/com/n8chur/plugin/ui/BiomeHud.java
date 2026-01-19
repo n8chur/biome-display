@@ -2,6 +2,7 @@ package com.n8chur.plugin.ui;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
+import com.hypixel.hytale.server.core.modules.i18n.I18nModule;
 import com.hypixel.hytale.server.core.ui.Anchor;
 import com.hypixel.hytale.server.core.ui.Value;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
@@ -11,6 +12,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class BiomeHud extends CustomUIHud {
 
@@ -71,15 +73,15 @@ public class BiomeHud extends CustomUIHud {
         if (this.biomeInfo == null) return;
 
         ui.set("#TierLabel.Style", getTierLabelStyle());
-        ui.set("#TierLabel.TextSpans", this.biomeInfo.tierName);
+        ui.set("#TierLabel.TextSpans", this.biomeInfo.getTierName());
 
         ui.set("#BiomeLabel.Style", getBiomeLabelStyle());
-        ui.set("#BiomeLabel.TextSpans", this.biomeInfo.biomeName);
+        ui.set("#BiomeLabel.TextSpans", this.biomeInfo.getBiomeName());
 
         ui.set("#RegionLabel.Style", getRegionLabelStyle());
         ui.set(
             "#RegionLabel.TextSpans",
-            Message.join(this.biomeInfo.regionName, Message.raw(", "), this.biomeInfo.zoneName)
+            Message.join(this.biomeInfo.getRegionName(), Message.raw(", "), this.biomeInfo.getZoneName())
         );
 
         setPosition(this.position, ui);
@@ -177,11 +179,44 @@ public class BiomeHud extends CustomUIHud {
         return position;
     }
 
-    public record BiomeInfo(
-        @Nonnull Message biomeName,
-        @Nonnull Message regionName,
-        @Nonnull Message zoneName,
-        @Nonnull Message tierName
-    ) {
+    public static class BiomeInfo {
+
+        private @Nonnull String biomeNameKey;
+        private @Nonnull String regionNameKey;
+        private @Nonnull String zoneNameKey;
+        private @Nonnull String tierNameKey;
+
+        public BiomeInfo(
+            @Nonnull String biomeNameKey,
+            @Nonnull String regionNameKey,
+            @Nonnull String zoneNameKey,
+            @Nonnull String tierNameKey
+        ) {
+            this.biomeNameKey = biomeNameKey;
+            this.regionNameKey = regionNameKey;
+            this.zoneNameKey = zoneNameKey;
+            this.tierNameKey = tierNameKey;
+        }
+
+        @Nonnull
+        public Message getRegionName() { return getMessage("server.map.region.%s", regionNameKey);}
+
+        @Nonnull
+        public Message getZoneName() { return getMessage("server.map.zone.%s", zoneNameKey); }
+
+        @Nonnull
+        public Message getTierName() { return getMessage("server.map.tier.%s", tierNameKey); }
+
+        @Nonnull
+        public Message getBiomeName() { return Message.raw(biomeNameKey); }
+
+        public Message getMessage(String formatString, String key) {
+            String resolvedKey = String.format(formatString, key);
+            if (I18nModule.get().getMessage("en-US", resolvedKey) == null) {
+                return Message.raw(key);
+            }
+
+            return Message.translation(resolvedKey);
+        }
     }
 }

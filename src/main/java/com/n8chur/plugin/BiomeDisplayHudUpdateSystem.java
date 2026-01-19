@@ -8,6 +8,7 @@ import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.EntityUtils;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.modules.i18n.I18nModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -21,6 +22,7 @@ import com.n8chur.plugin.ui.BiomeHud;
 import com.n8chur.plugin.ui.BiomeHudManager;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore> {
 
@@ -102,33 +104,18 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         ZoneBiomeResult result = generator.getZoneBiomeResultAt(seed, x, z);
 
         Biome biome = result.getBiome();
-        Message biomeName = Message.raw(biome.getName());
+        String biomeKey = biome.getName();
 
         Zone zone = result.getZoneResult().getZone();
-        Message regionName = getRegionName(zone);
+        String regionKey = zone.name();
 
         ZoneDiscoveryConfig discoveryConfig = zone.discoveryConfig();
-        Message zoneName = getZoneName(discoveryConfig);
+        String zoneKey = discoveryConfig.zone();
 
-        Message tierName = getTierName(zone);
+        String tierKey = zone.name();
 
-        BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeName, regionName, zoneName, tierName);
+        BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeKey, regionKey, zoneKey, tierKey);
         this.hudManager.updateHud(player, playerRef, biomeInfo, settings.getPosition(), settings.getSize());
-    }
-
-    private Message getRegionName(Zone zone) {
-        String regionNameKey = String.format("server.map.region.%s", zone.name());
-        return Message.translation(regionNameKey);
-    }
-
-    private Message getZoneName(ZoneDiscoveryConfig discoveryConfig) {
-        String zoneNameKey = String.format("server.map.zone.%s", discoveryConfig.zone());
-        return Message.translation(zoneNameKey);
-    }
-
-    private Message getTierName(Zone zone) {
-        String regionNameKey = String.format("server.map.tier.%s", zone.name());
-        return Message.translation(regionNameKey);
     }
 
     @Nonnull
