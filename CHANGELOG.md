@@ -1,3 +1,17 @@
+# 1.3.0
+
+* Added support for default configuration values. A config can be provided at `mods/n8chur_BiomeDisplay/config.json` in the following format:
+```json
+{
+  "DefaultHidden": true,
+  "DefaultPosition": {
+    "Vertical": "top",
+    "Horizontal": "right"
+  },
+  "DefaultSize": "small"
+}
+```
+
 # 1.2.1
 
 * Attempting to work around an issue that could cause BiomeDisplay to flicker a full screen overlay occasionally when in a high latency environment and used alongside other mods that integration with MultipleHUD.

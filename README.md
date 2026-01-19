@@ -28,6 +28,38 @@ If the [MultipleHUD](https://www.curseforge.com/hytale/mods/multiplehud) mod is 
 /biome size large
 ```
 
+## Config
+
+A config file can be proved at 
+  * **Servers**: `mods/n8chur_BiomeDisplay/config.json` 
+  * **Local**: `%appdata%/Hytale/UserData/Saves/<world_name>/mods/n8chur_BiomeDisplay/config.json`
+
+The config file uses the following format:
+```json
+{
+  "DefaultHidden": true,
+  "DefaultPosition": {
+    "Vertical": "top",
+    "Horizontal": "right"
+  },
+  "DefaultSize": "small"
+}
+```
+
+* `DefaultHidden`: Whether the HUD is hidden to the user when they first join a server.
+  * **Values**: `true`, `false` 
+  * **Default**: `false`
+* `DefaultPosition`: The default position of the HUD element when a user first joins a server.
+  * `Vertical`
+    * **Values**: `"top"`, `"middle"`, `"bottom"`
+    * **Default**: `"bottom"`
+  * `Horizontal`
+    * **Values**: `"left"`, `"center"`, `"right"`
+    * **Default**: `"left"`
+* `DefaultSize`: The default size of the HUD element when a user first joins a server.
+  * **Values**: `"small"`, `"medium"`, `"large"` 
+  * **Default**: `"medium"`
+
 ## TODO
 
 * Show more information about the zone/tier (e.g. ore generation, mobs, etc.)
