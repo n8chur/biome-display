@@ -1,3 +1,8 @@
+# 1.3.1
+
+* Improved performance by skipping UI updates the contents and layout are unchanged on tick.
+* Added better fallback if localizations are not present (uses raw values instead of presenting the user with a non-existent localization key).
+
 # 1.3.0
 
 * Added support for default configuration values. A config can be provided at `mods/n8chur_BiomeDisplay/config.json` in the following format:

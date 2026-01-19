@@ -59,8 +59,3 @@ The config file uses the following format:
 * `DefaultSize`: The default size of the HUD element when a user first joins a server.
   * **Values**: `"small"`, `"medium"`, `"large"` 
   * **Default**: `"medium"`
-
-## TODO
-
-* Show more information about the zone/tier (e.g. ore generation, mobs, etc.)
-* Localize biome name
