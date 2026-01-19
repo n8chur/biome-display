@@ -20,6 +20,13 @@ If the [MultipleHUD](https://www.curseforge.com/hytale/mods/multiplehud) mod is 
 /biome position bottom left
 ```
 
+### Adjust the size of the HUD
+
+```
+/biome size small
+/biome size medium
+/biome size large
+```
 
 ## TODO
 

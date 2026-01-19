@@ -1,3 +1,7 @@
+# 1.2.0
+
+* Added resize command with support for `small`, `medium`, and `large` via `/biome size <size>`.
+
 # 1.1.1
 
 * Fixed MultipleHUD 1.0.2 support as well as some issues when integrating with other mods (like Wayfinder).
