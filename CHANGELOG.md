@@ -1,3 +1,7 @@
+# 1.1.1
+
+* Fixed MultipleHUD 1.0.2 support as well as some issues when integrating with other mods (like Wayfinder).
+
 # 1.1.0
 
 * Added support for moving the position of the window using the `/biome position` command (e.g. `/biome position top left`)
