@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.ui.Value;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
+import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,26 +26,31 @@ public class BiomeHud extends CustomUIHud {
         super(playerRef);
     }
 
+    public void update() {
+        this.update(false, new UICommandBuilder());
+    }
+
+    public void clear() {
+        this.update(true, new UICommandBuilder());
+    }
+
     @Override
     protected void build(@Nonnull UICommandBuilder ui) {
-        if (this.biomeInfo == null) return;
-
         ui.append("Hud/Biome/BiomeHud.ui");
+    }
 
-        // Apply position classes or styles based on the setting
-        // Assuming the UI file has classes or we can set styles dynamically
-        // Since I don't have the UI file content, I'll assume we can set a class on the root element
-        // or just leave this as a placeholder for now if the UI file needs to be updated first.
-        // For now, I will just set the text.
+    @Override
+    public void update(boolean clear, @NonNullDecl UICommandBuilder ui) {
+        if (this.biomeInfo != null) {
 
-        // Ideally, we would do something like:
-        // ui.set("#RootElement.Classes", "hud-" + position.name().toLowerCase().replace("_", "-"));
+            ui.set("#TierLabel.TextSpans", this.biomeInfo.tierName);
+            ui.set("#BiomeLabel.TextSpans", this.biomeInfo.biomeName);
+            ui.set("#RegionLabel.TextSpans", Message.join(this.biomeInfo.regionName, Message.raw(", "), this.biomeInfo.zoneName).bold(true));
 
-        ui.set("#TierLabel.TextSpans", this.biomeInfo.tierName);
-        ui.set("#BiomeLabel.TextSpans", this.biomeInfo.biomeName);
-        ui.set("#RegionLabel.TextSpans", Message.join(this.biomeInfo.regionName, Message.raw(", "), this.biomeInfo.zoneName).bold(true));
+            setPosition(this.position, ui);
+        }
 
-        setPosition(this.position, ui);
+        super.update(clear, ui);
     }
 
     private void setPosition(@Nonnull BiomeDisplayUserSettingsComponent.HudPosition position, @Nonnull UICommandBuilder ui) {
