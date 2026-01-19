@@ -27,6 +27,7 @@ public class BiomeDisplayPlugin extends JavaPlugin {
 
     public BiomeDisplayPlugin(@Nonnull JavaPluginInit init) {
         super(init);
+
         LOGGER.atInfo()
             .log("Initializing " + this.getName() + " version " + this.getManifest().getVersion().toString());
     }
@@ -38,10 +39,11 @@ public class BiomeDisplayPlugin extends JavaPlugin {
             try {
                 Class.forName("com.buuz135.mhud.MultipleHUD");
                 this.hudManager.setMultipleHUDPresent(true);
-                LOGGER.atInfo().log("MultipleHUD found and accessible.");
             } catch (ClassNotFoundException e) {
                 LOGGER.atSevere().log("MultipleHUD plugin is loaded but the class cannot be accessed!");
             }
+        } else {
+            LOGGER.atWarning().log("MultipleHUD plugin is not present which may cause compatability issues with other mods that provide custom HUD elements.");
         }
     }
 
