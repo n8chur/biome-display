@@ -60,8 +60,9 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
     @Override
     public Component<EntityStore> clone() {
         BiomeDisplayUserSettingsComponent copy = new BiomeDisplayUserSettingsComponent();
-        copy.enabled = this.enabled; // Assuming 'enabled' is still a direct field
+        copy.enabled = this.enabled;
         copy.position = new HudPosition(this.position.vertical, this.position.horizontal);
+        copy.size = this.size;
         return copy;
     }
 
