@@ -1,3 +1,7 @@
+# 1.2.1
+
+* Attempting to work around an issue that could cause BiomeDisplay to flicker a full screen overlay occasionally when in a high latency environment and used alongside other mods that integration with MultipleHUD.
+
 # 1.2.0
 
 * Added resize command with support for `small`, `medium`, and `large` via `/biome size <size>`.

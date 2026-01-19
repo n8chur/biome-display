@@ -54,28 +54,35 @@ public class BiomeHud extends CustomUIHud {
     @Override
     protected void build(@Nonnull UICommandBuilder ui) {
         ui.append("Hud/Biome/BiomeHud.ui");
+
+        // While this doesn't seem like it should be required, it seems to resolve an issue with compatability with
+        // EyeSpy when network latency is high.
+        _update(ui);
     }
 
     @Override
     public void update(boolean clear, @NonNullDecl UICommandBuilder ui) {
-        if (this.biomeInfo != null) {
-
-            ui.set("#TierLabel.Style", getTierLabelStyle());
-            ui.set("#TierLabel.TextSpans", this.biomeInfo.tierName);
-
-            ui.set("#BiomeLabel.Style", getBiomeLabelStyle());
-            ui.set("#BiomeLabel.TextSpans", this.biomeInfo.biomeName);
-
-            ui.set("#RegionLabel.Style", getRegionLabelStyle());
-            ui.set(
-                "#RegionLabel.TextSpans",
-                Message.join(this.biomeInfo.regionName, Message.raw(", "), this.biomeInfo.zoneName)
-            );
-
-            setPosition(this.position, ui);
-        }
+        _update(ui);
 
         super.update(clear, ui);
+    }
+
+    private void _update(@NonNullDecl UICommandBuilder ui) {
+        if (this.biomeInfo == null) return;
+
+        ui.set("#TierLabel.Style", getTierLabelStyle());
+        ui.set("#TierLabel.TextSpans", this.biomeInfo.tierName);
+
+        ui.set("#BiomeLabel.Style", getBiomeLabelStyle());
+        ui.set("#BiomeLabel.TextSpans", this.biomeInfo.biomeName);
+
+        ui.set("#RegionLabel.Style", getRegionLabelStyle());
+        ui.set(
+            "#RegionLabel.TextSpans",
+            Message.join(this.biomeInfo.regionName, Message.raw(", "), this.biomeInfo.zoneName)
+        );
+
+        setPosition(this.position, ui);
     }
 
     private void setPosition(
