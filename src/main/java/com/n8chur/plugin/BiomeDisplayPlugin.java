@@ -7,12 +7,14 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.event.EventPriority;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.plugin.PluginBase;
 import com.hypixel.hytale.server.core.plugin.PluginManager;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
 import com.hypixel.hytale.server.worldgen.biome.Biome;
@@ -72,16 +74,22 @@ public class BiomeDisplayPlugin extends JavaPlugin {
             EventPriority.EARLY,
             PlayerReadyEvent.class,
             event -> {
-                Ref<EntityStore> ref = event.getPlayer().getReference();
-                if (ref == null) return;
+                Player player = event.getPlayer();
+                World world = player.getWorld();
+                if (world == null) return;
 
-                Store<EntityStore> store = ref.getStore();
-                BiomeDisplayUserSettingsComponent settings = store.getComponent(ref, userSettingsComponentType);
-                if (settings == null) {
-                    settings = store.ensureAndGetComponent(ref, userSettingsComponentType);
-                    BiomeDisplayConfig cfg = config.get();
-                    settings.setDefaults(cfg);
-                }
+                world.execute(() -> {
+                    Ref<EntityStore> ref = player.getReference();
+                    if (ref == null) return;
+
+                    Store<EntityStore> store = ref.getStore();
+                    BiomeDisplayUserSettingsComponent settings = store.getComponent(ref, userSettingsComponentType);
+                    if (settings == null) {
+                        settings = store.ensureAndGetComponent(ref, userSettingsComponentType);
+                        BiomeDisplayConfig cfg = config.get();
+                        settings.setDefaults(cfg);
+                    }
+                });
             }
         );
 
