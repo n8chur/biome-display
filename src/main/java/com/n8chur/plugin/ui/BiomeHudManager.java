@@ -7,9 +7,10 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BiomeHudManager {
 
@@ -17,7 +18,8 @@ public class BiomeHudManager {
 
     private static final String BIOME_DISPLAY_HUD_ID = "BiomeDisplay_HUD";
 
-    private final Map<PlayerRef, BiomeHud> huds = new HashMap<>();
+    // Maps player UUIDs to their BiomeHud instances.
+    private final ConcurrentHashMap<UUID, BiomeHud> huds = new ConcurrentHashMap<>();
 
     private boolean isMultipleHUDPresent = false;
 
@@ -32,8 +34,12 @@ public class BiomeHudManager {
         @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position,
         @Nonnull BiomeDisplayUserSettingsComponent.HudSize size
     ) {
-        boolean isNew = !huds.containsKey(playerRef);
-        BiomeHud hud = huds.computeIfAbsent(playerRef, BiomeHud::new);
+        UUID uuid = playerRef.getUuid();
+
+        // No need to use special atomic operations here since each player's HUD is only accessed by their own thread.
+        // We'll never see the same UUID being accessed from multiple threads at the same time.
+        boolean isNew = !huds.containsKey(uuid);
+        BiomeHud hud = huds.computeIfAbsent(uuid, k -> new BiomeHud(playerRef));
 
         if (
             !isNew
@@ -60,9 +66,11 @@ public class BiomeHudManager {
     }
 
     public void hideHud(@Nonnull Player player, @Nonnull PlayerRef playerRef) {
-        if (!huds.containsKey(playerRef)) return;
+        UUID uuid = playerRef.getUuid();
 
-        BiomeHud hud = huds.remove(playerRef);
+        if (!huds.containsKey(uuid)) return;
+
+        BiomeHud hud = huds.remove(uuid);
         hud.updateBiomeInfo(null);
         hud.clear();
 
@@ -72,6 +80,6 @@ public class BiomeHudManager {
     }
 
     public void onPlayerLeave(@Nonnull PlayerRef playerRef) {
-        huds.remove(playerRef);
+        huds.remove(playerRef.getUuid());
     }
 }
