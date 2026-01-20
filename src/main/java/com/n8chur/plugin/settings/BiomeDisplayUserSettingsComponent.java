@@ -132,13 +132,13 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
             .append(
                 new KeyedCodec<>("Vertical", Codec.STRING),
                 (c, v) -> c.vertical = Vertical.valueOf(v.toUpperCase()),
-                c -> c.vertical.toString()
+                c -> c.vertical.toString().toLowerCase()
             )
             .add()
             .append(
                 new KeyedCodec<>("Horizontal", Codec.STRING),
                 (c, v) -> c.horizontal = Horizontal.valueOf(v.toUpperCase()),
-                c -> c.horizontal.toString()
+                c -> c.horizontal.toString().toLowerCase()
             )
             .add()
             .build();

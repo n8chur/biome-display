@@ -17,7 +17,6 @@ import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
-import com.hypixel.hytale.server.worldgen.biome.Biome;
 import com.n8chur.plugin.settings.BiomeDisplayConfig;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 import com.n8chur.plugin.ui.BiomeHudManager;
@@ -30,7 +29,10 @@ public class BiomeDisplayPlugin extends JavaPlugin {
 
     private final BiomeHudManager hudManager = new BiomeHudManager();
 
-    private final Config<BiomeDisplayConfig> config = this.withConfig(BiomeDisplayConfig.CODEC);
+    private final Config<BiomeDisplayConfig> config = this.withConfig(
+        BiomeDisplayConfig.FILENAME,
+        BiomeDisplayConfig.CODEC
+    );
 
     public BiomeDisplayPlugin(@Nonnull JavaPluginInit init) {
         super(init);
@@ -57,6 +59,8 @@ public class BiomeDisplayPlugin extends JavaPlugin {
     @Override
     protected void setup() {
         super.setup();
+
+        BiomeDisplayConfig.createConfigFileIfNecessary(this.getDataDirectory());
 
         ComponentRegistryProxy<EntityStore> entityStoreRegistry = this.getEntityStoreRegistry();
 
