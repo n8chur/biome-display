@@ -1,3 +1,8 @@
+# 1.3.3
+
+* Config file is now created if one does not already exist.
+* Further attempts at fixing concurrency issues.
+
 # 1.3.2
 
 * Fixed a potential crash when attempting to create user settings due to not dispatching the work to a world thread.

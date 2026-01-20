@@ -34,6 +34,8 @@ A config file can be proved at
   * **Servers**: `mods/n8chur_BiomeDisplay/config.json` 
   * **Local**: `%appdata%/Hytale/UserData/Saves/<world_name>/mods/n8chur_BiomeDisplay/config.json`
 
+This file will be created on first launch if one is not already provided.
+
 The config file uses the following format:
 ```json
 {
