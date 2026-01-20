@@ -1,3 +1,7 @@
+# 1.3.2
+
+* Fixed a potential crash when attempting to create user settings due to not dispatching the work to a world thread.
+
 # 1.3.1
 
 * Improved performance by skipping UI updates the contents and layout are unchanged on tick.
