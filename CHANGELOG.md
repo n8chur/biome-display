@@ -1,3 +1,7 @@
+# 1.3.4
+
+* Attempt to fix a crash that could occur when an update was requested while the UI was in in an invalid state ("Crash - Selected element in CustomUI command was not found. Selector: #TierLabel.Style").
+
 # 1.3.3
 
 * Config file is now created if one does not already exist.
