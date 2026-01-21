@@ -3,6 +3,7 @@ package com.n8chur.plugin.ui;
 import com.buuz135.mhud.MultipleHUD;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 
@@ -71,11 +72,11 @@ public class BiomeHudManager {
         if (!huds.containsKey(uuid)) return;
 
         BiomeHud hud = huds.remove(uuid);
-        hud.updateBiomeInfo(null);
-        hud.clear();
 
         if (isMultipleHUDPresent) {
             MultipleHUD.getInstance().hideCustomHud(player, playerRef, BIOME_DISPLAY_HUD_ID);
+        } else {
+            hud.clear();
         }
     }
 

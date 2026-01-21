@@ -41,6 +41,11 @@ public class BiomeHud extends CustomUIHud {
 
     private static final Value<Integer> ANCHOR_PADDING = Value.ref("Hud/Biome/BiomeHud.ui", "AnchorPadding");
 
+    // Attempt to work around a crash that seemed to be caused by updates being performed when the UI was not built.
+    // A user reported this crash on CurseForge in a comment:
+    //    There's a crash sometimes when leaving a server and rejoining. Says "Crash - Selected element in CustomUI
+    //    command was not found. Selector: #TierLabel.Style". I can reliably reproduce this on my hosted server with
+    //    just biomedisplay enabled. When you rejoin the box isn't showing
     private boolean isBuilt = false;
 
     public BiomeHud(@Nonnull PlayerRef playerRef) {
@@ -48,11 +53,17 @@ public class BiomeHud extends CustomUIHud {
     }
 
     public void update() {
-        this.update(false, new UICommandBuilder());
+        if (!isBuilt) { return; }
+
+        UICommandBuilder ui = new UICommandBuilder();
+
+        _update(ui);
+
+        update(false, ui);
     }
 
     public void clear() {
-        super.update(true, new UICommandBuilder());
+        this.update(true, new UICommandBuilder());
 
         isBuilt = false;
     }
@@ -66,15 +77,6 @@ public class BiomeHud extends CustomUIHud {
         // While this doesn't seem like it should be required, it seems to resolve an issue with compatability with
         // EyeSpy when network latency is high.
         _update(ui);
-    }
-
-    @Override
-    public void update(boolean clear, @NonNullDecl UICommandBuilder ui) {
-        if (!isBuilt) { return; }
-
-        _update(ui);
-
-        super.update(clear, ui);
     }
 
     private void _update(@NonNullDecl UICommandBuilder ui) {
