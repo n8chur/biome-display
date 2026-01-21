@@ -41,6 +41,8 @@ public class BiomeHud extends CustomUIHud {
 
     private static final Value<Integer> ANCHOR_PADDING = Value.ref("Hud/Biome/BiomeHud.ui", "AnchorPadding");
 
+    private boolean isBuilt = false;
+
     public BiomeHud(@Nonnull PlayerRef playerRef) {
         super(playerRef);
     }
@@ -50,12 +52,16 @@ public class BiomeHud extends CustomUIHud {
     }
 
     public void clear() {
-        this.update(true, new UICommandBuilder());
+        super.update(true, new UICommandBuilder());
+
+        isBuilt = false;
     }
 
     @Override
     protected void build(@Nonnull UICommandBuilder ui) {
         ui.append("Hud/Biome/BiomeHud.ui");
+
+        isBuilt = true;
 
         // While this doesn't seem like it should be required, it seems to resolve an issue with compatability with
         // EyeSpy when network latency is high.
@@ -64,6 +70,8 @@ public class BiomeHud extends CustomUIHud {
 
     @Override
     public void update(boolean clear, @NonNullDecl UICommandBuilder ui) {
+        if (!isBuilt) { return; }
+
         _update(ui);
 
         super.update(clear, ui);
