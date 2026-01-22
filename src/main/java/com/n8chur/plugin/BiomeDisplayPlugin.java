@@ -22,6 +22,8 @@ import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 import com.n8chur.plugin.ui.BiomeHudManager;
 
 import javax.annotation.Nonnull;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class BiomeDisplayPlugin extends JavaPlugin {
 
@@ -60,7 +62,8 @@ public class BiomeDisplayPlugin extends JavaPlugin {
     protected void setup() {
         super.setup();
 
-        BiomeDisplayConfig.createConfigFileIfNecessary(this.getDataDirectory());
+        // Ensure config file exists
+        config.save();
 
         ComponentRegistryProxy<EntityStore> entityStoreRegistry = this.getEntityStoreRegistry();
 
