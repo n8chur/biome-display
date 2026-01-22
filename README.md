@@ -28,6 +28,13 @@ If the [MultipleHUD](https://www.curseforge.com/hytale/mods/multiplehud) mod is 
 /biome size large
 ```
 
+### Make background semi-transparent
+
+```
+/biome transparent true
+/biome transparent false
+```
+
 ## Config
 
 A config file can be proved at 
@@ -44,7 +51,8 @@ The config file uses the following format:
     "Vertical": "top",
     "Horizontal": "right"
   },
-  "DefaultSize": "small"
+  "DefaultSize": "small",
+  "DefaultIsTransparent": true
 }
 ```
 
@@ -61,3 +69,6 @@ The config file uses the following format:
 * `DefaultSize`: The default size of the HUD element when a user first joins a server.
   * **Values**: `"small"`, `"medium"`, `"large"` 
   * **Default**: `"medium"`
+* `DefaultIsTransparent`: Whether the background of the HUD element is semi-transparent when a user first joins a server.
+  * **Values**: `true`, `false`
+  * **Default**: `false`

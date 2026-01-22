@@ -16,10 +16,13 @@
 
 @AnchorPadding = 20;
 
+@TooltipBackground = PatchStyle(TexturePath: "../Common/TooltipDefaultBackground.png", Border: 20);
+@TooltipBackgroundTransparent = PatchStyle(TexturePath: "../Common/TooltipDefaultBackground_Transparent.png", Border: 20);
+
 Group #BiomeHud {
 
   Group #Content {
-    Background: (TexturePath: "../../Common/TooltipDefaultBackground.png", Border: 20);
+    Background: @TooltipBackground;
     Padding: (Horizontal: 30, Vertical: 20);
     LayoutMode: Left;
 

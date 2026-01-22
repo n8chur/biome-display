@@ -33,7 +33,8 @@ public class BiomeHudManager {
         @Nonnull PlayerRef playerRef,
         @Nonnull BiomeHud.BiomeInfo biomeInfo,
         @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position,
-        @Nonnull BiomeDisplayUserSettingsComponent.HudSize size
+        @Nonnull BiomeDisplayUserSettingsComponent.HudSize size,
+        @Nonnull boolean isTransparent
     ) {
         UUID uuid = playerRef.getUuid();
 
@@ -47,6 +48,7 @@ public class BiomeHudManager {
             && Objects.equals(hud.getBiomeInfo(), biomeInfo)
             && Objects.equals(hud.getPosition(), position)
             && hud.getSize() == size
+            && hud.getIsTransparent() == isTransparent
         ) {
             return;
         }
@@ -54,6 +56,7 @@ public class BiomeHudManager {
         hud.updateBiomeInfo(biomeInfo);
         hud.updatePosition(position);
         hud.updateSize(size);
+        hud.updateIsTransparent(isTransparent);
 
         if (isNew) {
             if (isMultipleHUDPresent) {

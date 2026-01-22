@@ -115,7 +115,14 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
         String tierKey = zone.name();
 
         BiomeHud.BiomeInfo biomeInfo = new BiomeHud.BiomeInfo(biomeKey, regionKey, zoneKey, tierKey);
-        this.hudManager.updateHud(player, playerRef, biomeInfo, settings.getPosition(), settings.getSize());
+        this.hudManager.updateHud(
+            player,
+            playerRef,
+            biomeInfo,
+            settings.getPosition(),
+            settings.getSize(),
+            settings.getIsTransparent()
+        );
     }
 
     @Nonnull

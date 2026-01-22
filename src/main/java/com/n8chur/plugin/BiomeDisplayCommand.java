@@ -8,6 +8,8 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.ParseResult;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
+import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
+import com.hypixel.hytale.server.core.command.system.arguments.types.BooleanFlagArgumentType;
 import com.hypixel.hytale.server.core.command.system.arguments.types.SingleArgumentType;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -31,6 +33,7 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
         addSubCommand(new ToggleSubCommand(userSettingsComponentType));
         addSubCommand(new PositionSubCommand(userSettingsComponentType));
         addSubCommand(new SizeSubCommand(userSettingsComponentType));
+        addSubCommand(new TransparentSubCommand(userSettingsComponentType));
     }
 
     private static class ToggleSubCommand extends AbstractPlayerCommand {
@@ -203,6 +206,47 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
             }
 
             settings.setSize(size);
+        }
+    }
+
+    private static class TransparentSubCommand extends AbstractPlayerCommand {
+
+        @Nonnull
+        private final ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
+
+        private final RequiredArg<Boolean> transparentArg;
+
+        public TransparentSubCommand(
+            @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType
+        ) {
+            super("transparent", "Reduces the opacity of the background of the HUD element.");
+
+            this.userSettingsComponentType = userSettingsComponentType;
+
+            this.setPermissionGroup(GameMode.Adventure);
+
+            this.transparentArg = withRequiredArg(
+                "transparent",
+                "Whether the HUD background is transparent",
+                ArgTypes.BOOLEAN
+            );
+        }
+
+        @Override
+        protected void execute(
+            @NonNullDecl CommandContext ctx,
+            @NonNullDecl Store<EntityStore> store,
+            @NonNullDecl Ref<EntityStore> ref,
+            @NonNullDecl PlayerRef playerRef,
+            @NonNullDecl World world
+        ) {
+            BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(
+                ref,
+                this.userSettingsComponentType
+            );
+
+            boolean isTransparent = this.transparentArg.get(ctx);
+            settings.setIsTransparent(isTransparent);
         }
     }
 }

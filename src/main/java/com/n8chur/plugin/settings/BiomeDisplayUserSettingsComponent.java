@@ -6,13 +6,16 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
+// TODO: Break out a simple model object so it can be passed into BiomeHud without passing around this component.
 public class BiomeDisplayUserSettingsComponent implements Component<EntityStore> {
 
     public static boolean DEFAULT_IS_HIDDEN = false;
+    public static boolean DEFAULT_IS_TRANSPARENT = false;
 
     private boolean enabled = !DEFAULT_IS_HIDDEN;
     private HudPosition position = HudPosition.DEFAULT;
     private HudSize size = HudSize.DEFAULT;
+    private boolean isTransparent = DEFAULT_IS_TRANSPARENT;
 
     public BiomeDisplayUserSettingsComponent() {}
 
@@ -32,10 +35,15 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
 
     public void setSize(HudSize size) { this.size = size; }
 
+    public boolean getIsTransparent() { return this.isTransparent; }
+
+    public void setIsTransparent(boolean isTransparent) { this.isTransparent = isTransparent; }
+
     public void setDefaults(BiomeDisplayConfig cfg) {
         this.enabled = !cfg.isDefaultHidden();
         this.position = cfg.getDefaultPosition();
         this.size = cfg.getDefaultSize();
+        this.isTransparent = cfg.getDefaultIsTransparent();
     }
 
     @Override
@@ -44,6 +52,7 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
         copy.enabled = this.enabled;
         copy.position = new HudPosition(this.position.vertical, this.position.horizontal);
         copy.size = this.size;
+        copy.isTransparent = this.isTransparent;
         return copy;
     }
 
@@ -73,6 +82,12 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
                 new KeyedCodec<>("BiomeDisplaySize", Codec.STRING),
                 (c, v) -> c.size = HudSize.valueOf(v.toUpperCase()),
                 c -> c.size.toString().toLowerCase()
+            )
+            .add()
+            .append(
+                new KeyedCodec<>("BiomeDisplayIsTransparent", Codec.BOOLEAN),
+                (c, v) -> c.isTransparent = v,
+                c -> c.isTransparent
             )
             .add()
             .build();

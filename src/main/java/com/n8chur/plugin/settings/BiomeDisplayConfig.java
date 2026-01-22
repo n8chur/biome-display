@@ -19,9 +19,12 @@ public class BiomeDisplayConfig {
 
     public BiomeDisplayUserSettingsComponent.HudSize getDefaultSize() { return defaultSize; }
 
+    public boolean getDefaultIsTransparent() { return defaultIsTransparent; }
+
     private boolean defaultHidden = BiomeDisplayUserSettingsComponent.DEFAULT_IS_HIDDEN;
     private BiomeDisplayUserSettingsComponent.HudPosition defaultPosition = BiomeDisplayUserSettingsComponent.HudPosition.DEFAULT;
     private BiomeDisplayUserSettingsComponent.HudSize defaultSize = BiomeDisplayUserSettingsComponent.HudSize.DEFAULT;
+    private boolean defaultIsTransparent = BiomeDisplayUserSettingsComponent.DEFAULT_IS_TRANSPARENT;
 
     public static void createConfigFileIfNecessary(Path dataDirectory) {
         Path configPath = dataDirectory.resolve(FILENAME + ".json");
@@ -49,6 +52,12 @@ public class BiomeDisplayConfig {
                 new KeyedCodec<>("DefaultSize", Codec.STRING),
                 (c, v) -> c.defaultSize = BiomeDisplayUserSettingsComponent.HudSize.valueOf(v.toUpperCase()),
                 c -> c.defaultSize.toString().toLowerCase()
+            )
+            .add()
+            .append(
+                new KeyedCodec<>("DefaultIsTransparent", Codec.BOOLEAN),
+                (c, v) -> c.defaultIsTransparent = v,
+                c -> c.defaultIsTransparent
             )
             .add()
             .build();

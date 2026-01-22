@@ -22,24 +22,30 @@ public class BiomeHud extends CustomUIHud {
     private BiomeDisplayUserSettingsComponent.HudPosition position = BiomeDisplayUserSettingsComponent.HudPosition.DEFAULT;
     @Nonnull
     private BiomeDisplayUserSettingsComponent.HudSize size = BiomeDisplayUserSettingsComponent.HudSize.MEDIUM;
+    @Nonnull
+    private boolean isTransparent = BiomeDisplayUserSettingsComponent.DEFAULT_IS_TRANSPARENT;
 
-    private static final Value<String> TIER_LABEL_SMALL_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "TierLabelSmallStyle");
-    private static final Value<String> TIER_LABEL_MEDIUM_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "TierLabelMediumStyle");
-    private static final Value<String> TIER_LABEL_LARGE_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "TierLabelLargeStyle");
+    private static final Value<String> TIER_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "TierLabelSmallStyle");
+    private static final Value<String> TIER_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "TierLabelMediumStyle");
+    private static final Value<String> TIER_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "TierLabelLargeStyle");
 
-    private static final Value<String> BIOME_LABEL_SMALL_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "BiomeLabelSmallStyle");
-    private static final Value<String> BIOME_LABEL_MEDIUM_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "BiomeLabelMediumStyle");
-    private static final Value<String> BIOME_LABEL_LARGE_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "BiomeLabelLargeStyle");
+    private static final Value<String> BIOME_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "BiomeLabelSmallStyle");
+    private static final Value<String> BIOME_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "BiomeLabelMediumStyle");
+    private static final Value<String> BIOME_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "BiomeLabelLargeStyle");
 
-    private static final Value<String> REGION_LABEL_SMALL_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "RegionLabelSmallStyle");
-    private static final Value<String> REGION_LABEL_MEDIUM_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "RegionLabelMediumStyle");
-    private static final Value<String> REGION_LABEL_LARGE_STYLE = Value.ref("Hud/Biome/BiomeHud.ui", "RegionLabelLargeStyle");
+    private static final Value<String> REGION_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "RegionLabelSmallStyle");
+    private static final Value<String> REGION_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "RegionLabelMediumStyle");
+    private static final Value<String> REGION_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "RegionLabelLargeStyle");
 
-    private static final Value<Integer> ANCHOR_HEIGHT_SMALL = Value.ref("Hud/Biome/BiomeHud.ui", "AnchorHeightSmall");
-    private static final Value<Integer> ANCHOR_HEIGHT_MEDIUM = Value.ref("Hud/Biome/BiomeHud.ui", "AnchorHeightMedium");
-    private static final Value<Integer> ANCHOR_HEIGHT_LARGE = Value.ref("Hud/Biome/BiomeHud.ui", "AnchorHeightLarge");
+    private static final Value<Integer> ANCHOR_HEIGHT_SMALL = Value.ref("Hud/BiomeHud.ui", "AnchorHeightSmall");
+    private static final Value<Integer> ANCHOR_HEIGHT_MEDIUM = Value.ref("Hud/BiomeHud.ui", "AnchorHeightMedium");
+    private static final Value<Integer> ANCHOR_HEIGHT_LARGE = Value.ref("Hud/BiomeHud.ui", "AnchorHeightLarge");
 
-    private static final Value<Integer> ANCHOR_PADDING = Value.ref("Hud/Biome/BiomeHud.ui", "AnchorPadding");
+    private static final Value<Integer> ANCHOR_PADDING = Value.ref("Hud/BiomeHud.ui", "AnchorPadding");
+
+
+    private static final Value<String> TOOLTIP_BACKGROUND_STYLE = Value.ref("Hud/BiomeHud.ui", "TooltipBackground");
+    private static final Value<String> TOOLTIP_BACKGROUND_TRANSPARENT_STYLE = Value.ref("Hud/BiomeHud.ui", "TooltipBackgroundTransparent");
 
     // Attempt to work around a crash that seemed to be caused by updates being performed when the UI was not built.
     // A user reported this crash on CurseForge in a comment:
@@ -70,7 +76,7 @@ public class BiomeHud extends CustomUIHud {
 
     @Override
     protected void build(@Nonnull UICommandBuilder ui) {
-        ui.append("Hud/Biome/BiomeHud.ui");
+        ui.append("Hud/BiomeHud.ui");
 
         isBuilt = true;
 
@@ -94,10 +100,15 @@ public class BiomeHud extends CustomUIHud {
             Message.join(this.biomeInfo.getRegionName(), Message.raw(", "), this.biomeInfo.getZoneName())
         );
 
-        setPosition(this.position, ui);
+        setSizeAndPosition(this.position, ui);
+
+        ui.set(
+            "#Content.Background",
+            this.isTransparent ? TOOLTIP_BACKGROUND_TRANSPARENT_STYLE : TOOLTIP_BACKGROUND_STYLE
+        );
     }
 
-    private void setPosition(
+    private void setSizeAndPosition(
         @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position,
         @Nonnull UICommandBuilder ui
     ) {
@@ -179,6 +190,8 @@ public class BiomeHud extends CustomUIHud {
         this.size = size;
     }
 
+    public void updateIsTransparent(boolean isTransparent) { this.isTransparent = isTransparent; }
+
     @Nullable
     public BiomeInfo getBiomeInfo() {
         return biomeInfo;
@@ -193,6 +206,9 @@ public class BiomeHud extends CustomUIHud {
     public BiomeDisplayUserSettingsComponent.HudSize getSize() {
         return size;
     }
+
+    @Nonnull
+    public boolean getIsTransparent() { return isTransparent; }
 
     public static class BiomeInfo {
 
