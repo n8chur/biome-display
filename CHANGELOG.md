@@ -1,3 +1,9 @@
+# 1.4.0
+
+* Added a command (`/biome transparent <true|false>`) to toggle whether the background of the HUD is semi-transparent.
+* Added config file support to determine if the HUD background is semi-transparent when a user first joins.
+* Updated config setup such that it will always save on launch instead of only writing the defaults if the file does not exist. This will ensure that new keys are shown in the config as they are added in future versions.
+
 # 1.3.4
 
 * Attempt to fix a crash that could occur when an update was requested while the UI was in in an invalid state ("Crash - Selected element in CustomUI command was not found. Selector: #TierLabel.Style").
