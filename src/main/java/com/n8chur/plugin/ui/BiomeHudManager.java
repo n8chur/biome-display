@@ -77,7 +77,7 @@ public class BiomeHudManager {
         BiomeHud hud = huds.remove(uuid);
 
         if (isMultipleHUDPresent) {
-            MultipleHUD.getInstance().hideCustomHud(player, playerRef, BIOME_DISPLAY_HUD_ID);
+            MultipleHUD.getInstance().hideCustomHud(player, BIOME_DISPLAY_HUD_ID);
         } else {
             hud.clear();
         }
