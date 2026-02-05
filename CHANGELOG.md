@@ -1,3 +1,8 @@
+# 1.4.1
+
+* Fixed compatibility with AutoMultiHud when using mods that have the same UI selector names (e.g. EyeSpy's #Info selector). All UI selectors are now prefixed by "BD" (for BiomeDisplay).
+* Updated MultipleHUD support to 1.0.4.
+
 # 1.4.0
 
 * Added a command (`/biome transparent <true|false>`) to toggle whether the background of the HUD is semi-transparent.
