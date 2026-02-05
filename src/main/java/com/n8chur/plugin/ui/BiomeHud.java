@@ -25,27 +25,27 @@ public class BiomeHud extends CustomUIHud {
     @Nonnull
     private boolean isTransparent = BiomeDisplayUserSettingsComponent.DEFAULT_IS_TRANSPARENT;
 
-    private static final Value<String> TIER_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "TierLabelSmallStyle");
-    private static final Value<String> TIER_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "TierLabelMediumStyle");
-    private static final Value<String> TIER_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "TierLabelLargeStyle");
+    private static final Value<String> TIER_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "BDTierLabelSmallStyle");
+    private static final Value<String> TIER_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "BDTierLabelMediumStyle");
+    private static final Value<String> TIER_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "BDTierLabelLargeStyle");
 
-    private static final Value<String> BIOME_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "BiomeLabelSmallStyle");
-    private static final Value<String> BIOME_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "BiomeLabelMediumStyle");
-    private static final Value<String> BIOME_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "BiomeLabelLargeStyle");
+    private static final Value<String> BIOME_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "BDBiomeLabelSmallStyle");
+    private static final Value<String> BIOME_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "BDBiomeLabelMediumStyle");
+    private static final Value<String> BIOME_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "BDBiomeLabelLargeStyle");
 
-    private static final Value<String> REGION_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "RegionLabelSmallStyle");
-    private static final Value<String> REGION_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "RegionLabelMediumStyle");
-    private static final Value<String> REGION_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "RegionLabelLargeStyle");
+    private static final Value<String> REGION_LABEL_SMALL_STYLE = Value.ref("Hud/BiomeHud.ui", "BDRegionLabelSmallStyle");
+    private static final Value<String> REGION_LABEL_MEDIUM_STYLE = Value.ref("Hud/BiomeHud.ui", "BDRegionLabelMediumStyle");
+    private static final Value<String> REGION_LABEL_LARGE_STYLE = Value.ref("Hud/BiomeHud.ui", "BDRegionLabelLargeStyle");
 
-    private static final Value<Integer> ANCHOR_HEIGHT_SMALL = Value.ref("Hud/BiomeHud.ui", "AnchorHeightSmall");
-    private static final Value<Integer> ANCHOR_HEIGHT_MEDIUM = Value.ref("Hud/BiomeHud.ui", "AnchorHeightMedium");
-    private static final Value<Integer> ANCHOR_HEIGHT_LARGE = Value.ref("Hud/BiomeHud.ui", "AnchorHeightLarge");
+    private static final Value<Integer> ANCHOR_HEIGHT_SMALL = Value.ref("Hud/BiomeHud.ui", "BDAnchorHeightSmall");
+    private static final Value<Integer> ANCHOR_HEIGHT_MEDIUM = Value.ref("Hud/BiomeHud.ui", "BDAnchorHeightMedium");
+    private static final Value<Integer> ANCHOR_HEIGHT_LARGE = Value.ref("Hud/BiomeHud.ui", "BDAnchorHeightLarge");
 
-    private static final Value<Integer> ANCHOR_PADDING = Value.ref("Hud/BiomeHud.ui", "AnchorPadding");
+    private static final Value<Integer> ANCHOR_PADDING = Value.ref("Hud/BiomeHud.ui", "BDAnchorPadding");
 
 
-    private static final Value<String> TOOLTIP_BACKGROUND_STYLE = Value.ref("Hud/BiomeHud.ui", "TooltipBackground");
-    private static final Value<String> TOOLTIP_BACKGROUND_TRANSPARENT_STYLE = Value.ref("Hud/BiomeHud.ui", "TooltipBackgroundTransparent");
+    private static final Value<String> TOOLTIP_BACKGROUND_STYLE = Value.ref("Hud/BiomeHud.ui", "BDTooltipBackground");
+    private static final Value<String> TOOLTIP_BACKGROUND_TRANSPARENT_STYLE = Value.ref("Hud/BiomeHud.ui", "BDTooltipBackgroundTransparent");
 
     // Attempt to work around a crash that seemed to be caused by updates being performed when the UI was not built.
     // A user reported this crash on CurseForge in a comment:
@@ -88,22 +88,22 @@ public class BiomeHud extends CustomUIHud {
     private void _update(@NonNullDecl UICommandBuilder ui) {
         if (this.biomeInfo == null) return;
 
-        ui.set("#TierLabel.Style", getTierLabelStyle());
-        ui.set("#TierLabel.TextSpans", this.biomeInfo.getTierName());
+        ui.set("#BDTierLabel.Style", getTierLabelStyle());
+        ui.set("#BDTierLabel.TextSpans", this.biomeInfo.getTierName());
 
-        ui.set("#BiomeLabel.Style", getBiomeLabelStyle());
-        ui.set("#BiomeLabel.TextSpans", this.biomeInfo.getBiomeName());
+        ui.set("#BDBiomeLabel.Style", getBiomeLabelStyle());
+        ui.set("#BDBiomeLabel.TextSpans", this.biomeInfo.getBiomeName());
 
-        ui.set("#RegionLabel.Style", getRegionLabelStyle());
+        ui.set("#BDRegionLabel.Style", getRegionLabelStyle());
         ui.set(
-            "#RegionLabel.TextSpans",
+            "#BDRegionLabel.TextSpans",
             Message.join(this.biomeInfo.getRegionName(), Message.raw(", "), this.biomeInfo.getZoneName())
         );
 
         setSizeAndPosition(this.position, ui);
 
         ui.set(
-            "#Content.Background",
+            "#BDContent.Background",
             this.isTransparent ? TOOLTIP_BACKGROUND_TRANSPARENT_STYLE : TOOLTIP_BACKGROUND_STYLE
         );
     }
@@ -118,32 +118,32 @@ public class BiomeHud extends CustomUIHud {
         switch (position.vertical) {
             case TOP:
                 anchor.setTop(ANCHOR_PADDING);
-                ui.set("#BiomeHud.LayoutMode", "Top");
+                ui.set("#BDHud.LayoutMode", "Top");
                 break;
             case MIDDLE:
-                ui.set("#BiomeHud.LayoutMode", "Center");
+                ui.set("#BDHud.LayoutMode", "Center");
                 break;
             case BOTTOM:
                 anchor.setBottom(ANCHOR_PADDING);
-                ui.set("#BiomeHud.LayoutMode", "Bottom");
+                ui.set("#BDHud.LayoutMode", "Bottom");
                 break;
         }
 
         switch (position.horizontal) {
             case LEFT:
                 anchor.setLeft(ANCHOR_PADDING);
-                ui.set("#BiomeHud.LayoutMode", "Left");
+                ui.set("#BDHud.LayoutMode", "Left");
                 break;
             case CENTER:
-                ui.set("#BiomeHud.LayoutMode", "Center");
+                ui.set("#BDHud.LayoutMode", "Center");
                 break;
             case RIGHT:
                 anchor.setRight(ANCHOR_PADDING);
-                ui.set("#BiomeHud.LayoutMode", "Right");
+                ui.set("#BDHud.LayoutMode", "Right");
                 break;
         }
 
-        ui.setObject("#BiomeHud.Anchor", anchor);
+        ui.setObject("#BDHud.Anchor", anchor);
     }
 
     private Value<Integer> getAnchorHeight() {

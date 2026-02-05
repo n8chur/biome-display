@@ -1,45 +1,45 @@
-@TierLabelSmallStyle = LabelStyle(FontSize: 16);
-@TierLabelMediumStyle = LabelStyle(FontSize: 24);
-@TierLabelLargeStyle = LabelStyle(FontSize: 32);
+@BDTierLabelSmallStyle = LabelStyle(FontSize: 16);
+@BDTierLabelMediumStyle = LabelStyle(FontSize: 24);
+@BDTierLabelLargeStyle = LabelStyle(FontSize: 32);
 
-@BiomeLabelSmallStyle = LabelStyle(FontSize: 12, TextColor: #aaaaaa);
-@BiomeLabelMediumStyle = LabelStyle(FontSize: 18, TextColor: #aaaaaa);
-@BiomeLabelLargeStyle = LabelStyle(FontSize: 24, TextColor: #aaaaaa);
+@BDBiomeLabelSmallStyle = LabelStyle(FontSize: 12, TextColor: #aaaaaa);
+@BDBiomeLabelMediumStyle = LabelStyle(FontSize: 18, TextColor: #aaaaaa);
+@BDBiomeLabelLargeStyle = LabelStyle(FontSize: 24, TextColor: #aaaaaa);
 
-@RegionLabelSmallStyle = LabelStyle(FontSize: 12, TextColor: #5555ff, RenderBold: true);
-@RegionLabelMediumStyle = LabelStyle(FontSize: 18, TextColor: #5555ff, RenderBold: true);
-@RegionLabelLargeStyle = LabelStyle(FontSize: 24, TextColor: #5555ff, RenderBold: true);
+@BDRegionLabelSmallStyle = LabelStyle(FontSize: 12, TextColor: #5555ff, RenderBold: true);
+@BDRegionLabelMediumStyle = LabelStyle(FontSize: 18, TextColor: #5555ff, RenderBold: true);
+@BDRegionLabelLargeStyle = LabelStyle(FontSize: 24, TextColor: #5555ff, RenderBold: true);
 
-@AnchorHeightSmall = 98;
-@AnchorHeightMedium = 128;
-@AnchorHeightLarge = 154;
+@BDAnchorHeightSmall = 98;
+@BDAnchorHeightMedium = 128;
+@BDAnchorHeightLarge = 154;
 
-@AnchorPadding = 20;
+@BDAnchorPadding = 20;
 
-@TooltipBackground = PatchStyle(TexturePath: "../Common/TooltipDefaultBackground.png", Border: 20);
-@TooltipBackgroundTransparent = PatchStyle(TexturePath: "../Common/TooltipDefaultBackground_Transparent.png", Border: 20);
+@BDTooltipBackground = PatchStyle(TexturePath: "../Common/TooltipDefaultBackground.png", Border: 20);
+@BDTooltipBackgroundTransparent = PatchStyle(TexturePath: "../Common/TooltipDefaultBackground_Transparent.png", Border: 20);
 
-Group #BiomeHud {
+Group #BDHud {
 
-  Group #Content {
-    Background: @TooltipBackground;
+  Group #BDContent {
+    Background: @BDTooltipBackground;
     Padding: (Horizontal: 30, Vertical: 20);
     LayoutMode: Left;
 
-    Group #Info {
+    Group #BDInfo {
         LayoutMode: Top;
         Padding: (Right: 10);
 
-        Label #TierLabel {
-          Style: @TierLabelMediumStyle;
+        Label #BDTierLabel {
+          Style: @BDTierLabelMediumStyle;
         }
 
-        Label #BiomeLabel {
-          Style: @BiomeLabelMediumStyle;
+        Label #BDBiomeLabel {
+          Style: @BDBiomeLabelMediumStyle;
         }
 
-        Label #RegionLabel {
-          Style: @RegionLabelSmallStyle;
+        Label #BDRegionLabel {
+          Style: @BDRegionLabelSmallStyle;
         }
     }
   }
