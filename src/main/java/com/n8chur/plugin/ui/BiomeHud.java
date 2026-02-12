@@ -8,7 +8,6 @@ import com.hypixel.hytale.server.core.ui.Value;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
-import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -85,7 +84,7 @@ public class BiomeHud extends CustomUIHud {
         _update(ui);
     }
 
-    private void _update(@NonNullDecl UICommandBuilder ui) {
+    private void _update(@Nonnull UICommandBuilder ui) {
         if (this.biomeInfo == null) return;
 
         ui.set("#BDTierLabel.Style", getTierLabelStyle());

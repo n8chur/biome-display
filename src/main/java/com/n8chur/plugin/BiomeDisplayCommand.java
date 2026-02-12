@@ -9,7 +9,6 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.ParseResult;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
-import com.hypixel.hytale.server.core.command.system.arguments.types.BooleanFlagArgumentType;
 import com.hypixel.hytale.server.core.command.system.arguments.types.SingleArgumentType;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -17,7 +16,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
-import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
 
@@ -53,11 +51,11 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
 
         @Override
         protected void execute(
-            @NonNullDecl CommandContext commandContext,
-            @NonNullDecl Store<EntityStore> store,
-            @NonNullDecl Ref<EntityStore> ref,
-            @NonNullDecl PlayerRef playerRef,
-            @NonNullDecl World world
+            @Nonnull CommandContext commandContext,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull PlayerRef playerRef,
+            @Nonnull World world
         ) {
             BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(ref, userSettingsComponentType);
 
@@ -112,11 +110,11 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
 
         @Override
         protected void execute(
-            @NonNullDecl CommandContext ctx,
-            @NonNullDecl Store<EntityStore> store,
-            @NonNullDecl Ref<EntityStore> ref,
-            @NonNullDecl PlayerRef playerRef,
-            @NonNullDecl World world
+            @Nonnull CommandContext ctx,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull PlayerRef playerRef,
+            @Nonnull World world
         ) {
             BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(
                 ref,
@@ -184,11 +182,11 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
 
         @Override
         protected void execute(
-            @NonNullDecl CommandContext ctx,
-            @NonNullDecl Store<EntityStore> store,
-            @NonNullDecl Ref<EntityStore> ref,
-            @NonNullDecl PlayerRef playerRef,
-            @NonNullDecl World world
+            @Nonnull CommandContext ctx,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull PlayerRef playerRef,
+            @Nonnull World world
         ) {
             BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(
                 ref,
@@ -234,11 +232,11 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
 
         @Override
         protected void execute(
-            @NonNullDecl CommandContext ctx,
-            @NonNullDecl Store<EntityStore> store,
-            @NonNullDecl Ref<EntityStore> ref,
-            @NonNullDecl PlayerRef playerRef,
-            @NonNullDecl World world
+            @Nonnull CommandContext ctx,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull PlayerRef playerRef,
+            @Nonnull World world
         ) {
             BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(
                 ref,
