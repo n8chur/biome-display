@@ -13,7 +13,7 @@
         "Hytale:EntityModule": "*"
     },
     "OptionalDependencies": {
-        "Buuz135:MultipleHUD": ">=1.0.4"
+        "Buuz135:MultipleHUD": ">=1.0.6"
     },
     "DisabledByDefault": false,
     "Main": "com.n8chur.plugin.BiomeDisplayPlugin",

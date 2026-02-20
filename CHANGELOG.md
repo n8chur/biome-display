@@ -1,3 +1,7 @@
+# Unreleased
+
+* Updated MultipleHUD support to 1.0.6.
+
 # 1.4.1
 
 * Fixed compatibility with AutoMultiHud when using mods that have the same UI selector names (e.g. EyeSpy's #Info selector). All UI selectors are now prefixed by "BD" (for BiomeDisplay).
