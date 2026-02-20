@@ -3,6 +3,7 @@ package com.n8chur.plugin;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.math.vector.Vector2i;
 import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -30,6 +31,7 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
 
         addSubCommand(new ToggleSubCommand(userSettingsComponentType));
         addSubCommand(new PositionSubCommand(userSettingsComponentType));
+        addSubCommand(new OffsetSubCommand(userSettingsComponentType));
         addSubCommand(new SizeSubCommand(userSettingsComponentType));
         addSubCommand(new TransparentSubCommand(userSettingsComponentType));
     }
@@ -146,6 +148,47 @@ public class BiomeDisplayCommand extends AbstractCommandCollection {
             );
             settings.setPosition(position);
             playerRef.sendMessage(Message.raw("HUD position set to " + position));
+        }
+    }
+
+    private static class OffsetSubCommand extends AbstractPlayerCommand {
+
+        @Nonnull
+        private final ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType;
+
+        private final RequiredArg<Integer> xArg;
+        private final RequiredArg<Integer> yArg;
+
+        public OffsetSubCommand(
+            @Nonnull ComponentType<EntityStore, BiomeDisplayUserSettingsComponent> userSettingsComponentType
+        ) {
+            super("offset", "Sets a positional offset of the biome display HUD.");
+
+            this.userSettingsComponentType = userSettingsComponentType;
+
+            this.setPermissionGroup(GameMode.Adventure);
+
+            this.xArg = withRequiredArg("x", "Horizontal offset", ArgTypes.INTEGER);
+            this.yArg = withRequiredArg("y", "Vertical offset", ArgTypes.INTEGER);
+        }
+
+        @Override
+        protected void execute(
+            @Nonnull CommandContext ctx,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull PlayerRef playerRef,
+            @Nonnull World world
+        ) {
+            BiomeDisplayUserSettingsComponent settings = store.ensureAndGetComponent(
+                ref,
+                this.userSettingsComponentType
+            );
+
+            int x = this.xArg.get(ctx);
+            int y = this.yArg.get(ctx);
+            settings.setOffset(new Vector2i(x, y));
+            playerRef.sendMessage(Message.raw("HUD offset set to x=" + x + ", y=" + y));
         }
     }
 

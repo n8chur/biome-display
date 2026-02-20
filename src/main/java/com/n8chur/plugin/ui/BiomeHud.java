@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.ui.Anchor;
 import com.hypixel.hytale.server.core.ui.Value;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.math.vector.Vector2i;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 
 import javax.annotation.Nonnull;
@@ -19,6 +20,8 @@ public class BiomeHud extends CustomUIHud {
     private BiomeInfo biomeInfo;
     @Nonnull
     private BiomeDisplayUserSettingsComponent.HudPosition position = BiomeDisplayUserSettingsComponent.HudPosition.DEFAULT;
+    @Nonnull
+    private Vector2i offset = new Vector2i(BiomeDisplayUserSettingsComponent.DEFAULT_OFFSET);
     @Nonnull
     private BiomeDisplayUserSettingsComponent.HudSize size = BiomeDisplayUserSettingsComponent.HudSize.MEDIUM;
     @Nonnull
@@ -39,9 +42,6 @@ public class BiomeHud extends CustomUIHud {
     private static final Value<Integer> ANCHOR_HEIGHT_SMALL = Value.ref("Hud/BiomeHud.ui", "BDAnchorHeightSmall");
     private static final Value<Integer> ANCHOR_HEIGHT_MEDIUM = Value.ref("Hud/BiomeHud.ui", "BDAnchorHeightMedium");
     private static final Value<Integer> ANCHOR_HEIGHT_LARGE = Value.ref("Hud/BiomeHud.ui", "BDAnchorHeightLarge");
-
-    private static final Value<Integer> ANCHOR_PADDING = Value.ref("Hud/BiomeHud.ui", "BDAnchorPadding");
-
 
     private static final Value<String> TOOLTIP_BACKGROUND_STYLE = Value.ref("Hud/BiomeHud.ui", "BDTooltipBackground");
     private static final Value<String> TOOLTIP_BACKGROUND_TRANSPARENT_STYLE = Value.ref("Hud/BiomeHud.ui", "BDTooltipBackgroundTransparent");
@@ -99,7 +99,9 @@ public class BiomeHud extends CustomUIHud {
             Message.join(this.biomeInfo.getRegionName(), Message.raw(", "), this.biomeInfo.getZoneName())
         );
 
-        setSizeAndPosition(this.position, ui);
+        setPosition(ui);
+        setSize(ui);
+        setOffset(ui);
 
         ui.set(
             "#BDContent.Background",
@@ -107,42 +109,61 @@ public class BiomeHud extends CustomUIHud {
         );
     }
 
-    private void setSizeAndPosition(
-        @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position,
-        @Nonnull UICommandBuilder ui
-    ) {
-        Anchor anchor = new Anchor();
-        anchor.setHeight(getAnchorHeight());
-
-        switch (position.vertical) {
+    private void setPosition(@Nonnull UICommandBuilder ui) {
+        switch (this.position.vertical) {
             case TOP:
-                anchor.setTop(ANCHOR_PADDING);
                 ui.set("#BDHud.LayoutMode", "Top");
                 break;
             case MIDDLE:
-                ui.set("#BDHud.LayoutMode", "Center");
+                ui.set("#BDHud.LayoutMode", "Full");
                 break;
             case BOTTOM:
-                anchor.setBottom(ANCHOR_PADDING);
                 ui.set("#BDHud.LayoutMode", "Bottom");
                 break;
         }
 
-        switch (position.horizontal) {
+        switch (this.position.horizontal) {
             case LEFT:
-                anchor.setLeft(ANCHOR_PADDING);
-                ui.set("#BDHud.LayoutMode", "Left");
+                ui.set("#BDInner.LayoutMode", "Left");
                 break;
             case CENTER:
-                ui.set("#BDHud.LayoutMode", "Center");
+                ui.set("#BDInner.LayoutMode", "Center");
                 break;
             case RIGHT:
-                anchor.setRight(ANCHOR_PADDING);
-                ui.set("#BDHud.LayoutMode", "Right");
+                ui.set("#BDInner.LayoutMode", "Right");
+                break;
+        }
+    }
+
+    private void setSize(@Nonnull UICommandBuilder ui) {
+        Anchor anchor = new Anchor();
+        anchor.setHeight(getAnchorHeight());
+        ui.setObject("#BDContent.Anchor", anchor);
+    }
+
+    private void setOffset(@Nonnull UICommandBuilder ui) {
+        Anchor anchor = new Anchor();
+
+        switch (this.position.vertical) {
+            case TOP:
+            case MIDDLE:
+                anchor.setTop(Value.of(offset.getY()));
+                break;
+            case BOTTOM:
+                anchor.setBottom(Value.of(-offset.getY()));
+                break;
+        }
+        switch (this.position.horizontal) {
+            case LEFT:
+            case CENTER:
+                anchor.setLeft(Value.of(offset.getX()));
+                break;
+            case RIGHT:
+                anchor.setRight(Value.of(-offset.getX()));
                 break;
         }
 
-        ui.setObject("#BDHud.Anchor", anchor);
+        ui.setObject("#BDOffset.Anchor", anchor);
     }
 
     private Value<Integer> getAnchorHeight() {
@@ -185,6 +206,10 @@ public class BiomeHud extends CustomUIHud {
         this.position = position;
     }
 
+    public void updateOffset(Vector2i offset) {
+        this.offset = offset;
+    }
+
     public void updateSize(BiomeDisplayUserSettingsComponent.HudSize size) {
         this.size = size;
     }
@@ -204,6 +229,11 @@ public class BiomeHud extends CustomUIHud {
     @Nonnull
     public BiomeDisplayUserSettingsComponent.HudSize getSize() {
         return size;
+    }
+
+    @Nonnull
+    public Vector2i getOffset() {
+        return offset;
     }
 
     @Nonnull

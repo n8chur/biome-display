@@ -120,6 +120,7 @@ public class BiomeDisplayHudUpdateSystem extends EntityTickingSystem<EntityStore
             playerRef,
             biomeInfo,
             settings.getPosition(),
+            settings.getOffset(),
             settings.getSize(),
             settings.getIsTransparent()
         );

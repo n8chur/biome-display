@@ -14,33 +14,39 @@
 @BDAnchorHeightMedium = 128;
 @BDAnchorHeightLarge = 154;
 
-@BDAnchorPadding = 20;
-
 @BDTooltipBackground = PatchStyle(TexturePath: "../Common/TooltipDefaultBackground.png", Border: 20);
 @BDTooltipBackgroundTransparent = PatchStyle(TexturePath: "../Common/TooltipDefaultBackground_Transparent.png", Border: 20);
 
 Group #BDHud {
 
-  Group #BDContent {
-    Background: @BDTooltipBackground;
-    Padding: (Horizontal: 30, Vertical: 20);
-    LayoutMode: Left;
+  Padding: (Full: 20);
 
-    Group #BDInfo {
-        LayoutMode: Top;
-        Padding: (Right: 10);
+  Group #BDInner {
 
-        Label #BDTierLabel {
-          Style: @BDTierLabelMediumStyle;
+    Group #BDOffset {
+
+      Group #BDContent {
+        Background: @BDTooltipBackground;
+        Padding: (Horizontal: 30, Vertical: 20);
+        LayoutMode: Left;
+
+        Group #BDInfo {
+          LayoutMode: Top;
+          Padding: (Right: 10);
+
+          Label #BDTierLabel {
+            Style: @BDTierLabelMediumStyle;
+          }
+
+          Label #BDBiomeLabel {
+            Style: @BDBiomeLabelMediumStyle;
+          }
+
+          Label #BDRegionLabel {
+            Style: @BDRegionLabelSmallStyle;
+          }
         }
-
-        Label #BDBiomeLabel {
-          Style: @BDBiomeLabelMediumStyle;
-        }
-
-        Label #BDRegionLabel {
-          Style: @BDRegionLabelSmallStyle;
-        }
+      }
     }
   }
 }

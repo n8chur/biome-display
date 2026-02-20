@@ -4,6 +4,7 @@ import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Component;
+import com.hypixel.hytale.math.vector.Vector2i;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 // TODO: Break out a simple model object so it can be passed into BiomeHud without passing around this component.
@@ -11,9 +12,11 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
 
     public static boolean DEFAULT_IS_HIDDEN = false;
     public static boolean DEFAULT_IS_TRANSPARENT = false;
+    public static Vector2i DEFAULT_OFFSET = new Vector2i(0, 0);
 
     private boolean enabled = !DEFAULT_IS_HIDDEN;
     private HudPosition position = HudPosition.DEFAULT;
+    private Vector2i offset = new Vector2i(DEFAULT_OFFSET);
     private HudSize size = HudSize.DEFAULT;
     private boolean isTransparent = DEFAULT_IS_TRANSPARENT;
 
@@ -31,6 +34,10 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
         this.position = position;
     }
 
+    public Vector2i getOffset() { return this.offset; }
+
+    public void setOffset(Vector2i offset) { this.offset = offset; }
+
     public HudSize getSize() { return this.size; }
 
     public void setSize(HudSize size) { this.size = size; }
@@ -42,6 +49,7 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
     public void setDefaults(BiomeDisplayConfig cfg) {
         this.enabled = !cfg.isDefaultHidden();
         this.position = cfg.getDefaultPosition();
+        this.offset = cfg.getDefaultOffset();
         this.size = cfg.getDefaultSize();
         this.isTransparent = cfg.getDefaultIsTransparent();
     }
@@ -51,6 +59,7 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
         BiomeDisplayUserSettingsComponent copy = new BiomeDisplayUserSettingsComponent();
         copy.enabled = this.enabled;
         copy.position = new HudPosition(this.position.vertical, this.position.horizontal);
+        copy.offset = new Vector2i(this.offset);
         copy.size = this.size;
         copy.isTransparent = this.isTransparent;
         return copy;
@@ -76,6 +85,12 @@ public class BiomeDisplayUserSettingsComponent implements Component<EntityStore>
                 new KeyedCodec<>("BiomeDisplayPositionHorizontal", Codec.STRING),
                 (c, v) -> c.position.horizontal = HudPosition.Horizontal.valueOf(v),
                 c -> c.position.horizontal.toString()
+            )
+            .add()
+            .append(
+                new KeyedCodec<>("BiomeDisplayOffset", Vector2i.CODEC),
+                (c, v) -> c.offset = v,
+                c -> c.offset
             )
             .add()
             .append(

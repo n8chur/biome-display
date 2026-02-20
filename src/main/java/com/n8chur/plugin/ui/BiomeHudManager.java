@@ -5,6 +5,7 @@ import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.math.vector.Vector2i;
 import com.n8chur.plugin.settings.BiomeDisplayUserSettingsComponent;
 
 import javax.annotation.Nonnull;
@@ -33,6 +34,7 @@ public class BiomeHudManager {
         @Nonnull PlayerRef playerRef,
         @Nonnull BiomeHud.BiomeInfo biomeInfo,
         @Nonnull BiomeDisplayUserSettingsComponent.HudPosition position,
+        @Nonnull Vector2i offset,
         @Nonnull BiomeDisplayUserSettingsComponent.HudSize size,
         @Nonnull boolean isTransparent
     ) {
@@ -47,6 +49,7 @@ public class BiomeHudManager {
             !isNew
             && Objects.equals(hud.getBiomeInfo(), biomeInfo)
             && Objects.equals(hud.getPosition(), position)
+            && Objects.equals(hud.getOffset(), offset)
             && hud.getSize() == size
             && hud.getIsTransparent() == isTransparent
         ) {
@@ -55,6 +58,7 @@ public class BiomeHudManager {
 
         hud.updateBiomeInfo(biomeInfo);
         hud.updatePosition(position);
+        hud.updateOffset(offset);
         hud.updateSize(size);
         hud.updateIsTransparent(isTransparent);
 

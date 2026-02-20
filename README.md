@@ -12,12 +12,20 @@ If the [MultipleHUD](https://www.curseforge.com/hytale/mods/multiplehud) mod is 
 /biome toggle
 ```
 
-### Move the position of the HUD
+### Adjust the position of the HUD
 
 ```
 /biome position top center
 /biome position middle right
 /biome position bottom left
+```
+
+### Set the positional offset of the HUD
+
+```
+/biome offset 100 0
+/biome offset -500 20
+/biome offset 0 -120
 ```
 
 ### Adjust the size of the HUD
@@ -66,6 +74,13 @@ The config file uses the following format:
   * `Horizontal`
     * **Values**: `"left"`, `"center"`, `"right"`
     * **Default**: `"left"`
+* `DefaultOffset`: The default positional offset of the HUD element when a user first joins a server.
+  * `X`
+    * **Values**: Integer (e.g. -100, 0, 64)
+    * **Default**: 0
+  * `Y`
+    * **Values**: Integer (e.g. -100, 0, 64)
+    * **Default**: 0
 * `DefaultSize`: The default size of the HUD element when a user first joins a server.
   * **Values**: `"small"`, `"medium"`, `"large"` 
   * **Default**: `"medium"`

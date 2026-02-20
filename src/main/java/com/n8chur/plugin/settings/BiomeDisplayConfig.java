@@ -3,6 +3,7 @@ package com.n8chur.plugin.settings;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
+import com.hypixel.hytale.math.vector.Vector2i;
 
 public class BiomeDisplayConfig {
 
@@ -12,12 +13,15 @@ public class BiomeDisplayConfig {
 
     public BiomeDisplayUserSettingsComponent.HudPosition getDefaultPosition() { return defaultPosition; }
 
+    public Vector2i getDefaultOffset() { return defaultOffset; }
+
     public BiomeDisplayUserSettingsComponent.HudSize getDefaultSize() { return defaultSize; }
 
     public boolean getDefaultIsTransparent() { return defaultIsTransparent; }
 
     private boolean defaultHidden = BiomeDisplayUserSettingsComponent.DEFAULT_IS_HIDDEN;
     private BiomeDisplayUserSettingsComponent.HudPosition defaultPosition = BiomeDisplayUserSettingsComponent.HudPosition.DEFAULT;
+    private Vector2i defaultOffset = new Vector2i(BiomeDisplayUserSettingsComponent.DEFAULT_OFFSET);
     private BiomeDisplayUserSettingsComponent.HudSize defaultSize = BiomeDisplayUserSettingsComponent.HudSize.DEFAULT;
     private boolean defaultIsTransparent = BiomeDisplayUserSettingsComponent.DEFAULT_IS_TRANSPARENT;
 
@@ -33,6 +37,12 @@ public class BiomeDisplayConfig {
                 new KeyedCodec<>("DefaultPosition", BiomeDisplayUserSettingsComponent.HudPosition.CODEC),
                 (c, v) -> c.defaultPosition = v,
                 c -> c.defaultPosition
+            )
+            .add()
+            .append(
+                new KeyedCodec<>("DefaultOffset", Vector2i.CODEC),
+                (c, v) -> c.defaultOffset = v,
+                c -> c.defaultOffset
             )
             .add()
             .append(
