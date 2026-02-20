@@ -1,4 +1,4 @@
-# Unreleased
+# 1.5.0
 
 * Updated MultipleHUD support to 1.0.6.
 * Added `/biome offset <x> <y>` for fine-grained HUD positioning and config-backed default offset support.
